@@ -11,9 +11,10 @@ class User
     public $email;
     public $firstname;
     public $lastname;
+    public $tel;
 
     // CONSTRUCTOR
-    public function __construct($id, $login, $password, $email, $firstname, $lastname)
+    public function __construct($id, $login, $password, $email, $firstname, $lastname, $tel)
     {
         $this->id = $id;
         $this->login = $login;
@@ -21,6 +22,7 @@ class User
         $this->email = $email;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
+        $this->tel = $tel;
     }
 
     // GET
@@ -43,6 +45,10 @@ class User
     public function getLastname()
     {
         return $this->lastname;
+    }
+    public function getTel()
+    {
+        return $this->tel;
     }
     // __________________________________ //
 
@@ -67,6 +73,10 @@ class User
     {
         $this->lastname = $lastname;
     }
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+    }
     // ___________________________________ //
 
     // FUNCTION
@@ -83,7 +93,7 @@ class User
 
     public function verify_empty()
     {
-        if (empty($_POST['login']) || empty($_POST['email']) || empty($_POST['firstname']) || empty($_POST['lastname'])) {
+        if (empty($_POST['login']) || empty($_POST['email']) || empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['tel'])) {
             return false;
         } else {
             return true;
@@ -108,8 +118,8 @@ class User
     public function register($bdd)
     {
         if ($this->verify_login($bdd) == true && $this->verify_empty() == true && $this->verify_password() == true) {
-            $register = $bdd->prepare("INSERT INTO `users` (`login` , `password`, `email` , `firstname` , `lastname`) VALUES (?, ? , ?, ? ,?);");
-            $register->execute([$this->login, $this->password, $this->email, $this->firstname, $this->lastname]);
+            $register = $bdd->prepare("INSERT INTO `users` (`login` , `password`, `email` , `firstname` , `lastname`, `tel`) VALUES (?, ? , ?, ? ,?, ?);");
+            $register->execute([$this->login, $this->password, $this->email, $this->firstname, $this->lastname, $this->tel]);
         } else {
             return false;
         }
@@ -127,6 +137,7 @@ class User
             $this->email = $result['email'];
             $this->firstname = $result['firstname'];
             $this->lastname = $result['lastname'];
+            $this->tel = $result['tel'];
             $_SESSION['user'] = $this;
         }
     }
