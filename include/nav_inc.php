@@ -16,8 +16,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./femmes.php">Femmes</a>
                 </li>
+                <?php if (!empty($_SESSION) && $_SESSION['user']->login == "admin") { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./admin.php">Admin</a>
+                    </li>
+                <?php
+                } ?>
+
             </ul>
+
         </div>
+
         <div class="d-flex">
             <input class="form-control me-2" id="search-bar" type="search" placeholder="rechercher..." aria-label="Search">
             <div id="result"></div>
