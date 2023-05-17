@@ -13,22 +13,22 @@ include_once('./include/head_inc.php');
     <title>Hommes</title>
 </head>
 <body>
-    
-    <main>
-        <div class="manbtn">
-            <h3>Hommes</h3>
-            <button type="button" class="btn btn-secondary">T-shirt</button>
-            <button type="button" class="btn btn-secondary">Pull</button>
-            <button type="button" class="btn btn-secondary">Short</button>
-            <button type="button" class="btn btn-secondary">Pantalon</button>
-            <button type="button" class="btn btn-light"><i class="fa-solid fa-filter"></i>Filtrer</button>
-        </div>
-        <div class="manpct_t"></div>
-        <div class="manpct_b"></div>
-    </main>
-    <footer>
-        <?php include_once('./include/footer_inc.php') ?>
-    </footer>
-    
+    <div id="container">
+        <main>
+            <div class="manbtn">
+                <h3>Hommes</h3>
+                <button type="button" class="btn btn-secondary">T-shirt</button>
+                <button type="button" class="btn btn-secondary">Pull</button>
+                <button type="button" class="btn btn-secondary">Short</button>
+                <button type="button" class="btn btn-secondary">Pantalon</button>
+                <button type="button" class="btn btn-light"><i class="fa-solid fa-filter"></i>Filtrer</button>
+            </div>
+            <div class="manpct_t"></div>
+            <div class="manpct_b"></div>
+        </main>
+        <footer>
+            <?php include_once('./include/footer_inc.php') ?>
+        </footer>
+    </div>
 </body>
 </html>
