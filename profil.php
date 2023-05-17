@@ -1,5 +1,5 @@
 <?php
-
+include_once("./class/User.php")
 ?>
 
 <!DOCTYPE html>
@@ -21,8 +21,8 @@
     <main>
 
         <?php
-        // var_dump($_SESSION);
-        if (isset($_SESSION) == NULL) { ?>
+        var_dump($_SESSION);
+        if ($_SESSION == NULL) { ?>
             <div id="container">
                 <div class="button">
                     <a href="./connexion.php">Se connecté</a>
@@ -32,11 +32,15 @@
                 </div>
             </div>
         <?php
-        } else { ?>
+        } else if (isset($_SESSION)) { ?>
             <div id="container">
-
+                <div class="button">
+                    <a href="./deconnexion.php">Se déconnecter</a>
+                </div>
             </div>
         <?php } ?>
+
+
     </main>
 </body>
 

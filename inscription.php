@@ -11,6 +11,7 @@ include("./class/User.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/style.css">
+    <script src="./js/inscription.js" defer></script>
     <?php include_once("./include/head_inc.php") ?>
     <title>Inscription</title>
 </head>
@@ -20,9 +21,8 @@ include("./class/User.php");
         <?php include_once("./include/nav_inc.php") ?>
     </header>
     <main>
-
-        <div>
-            <form action="" method="post">
+        <div id="container">
+            <form action="" method="post" onsubmit="return validerFormulaire()">
                 <div class="mb-3">
                     <label class="form-label" for="name">Login: </label>
                     <input class="form-control" type="text" name="login" id="login">
@@ -53,23 +53,30 @@ include("./class/User.php");
 
                 <div class="mb-3">
                     <label class="form-label" for="password">Password Confirm: </label>
-                    <input class="form-control" type="password" name="password_confirm" id="password">
+                    <input class="form-control" type="password" name="password_confirm" id="password_confirm">
+                </div>
+                <div class="mb-3">
+                    <div id="erreur"></div>
                 </div>
                 <div class="mb-3">
                     <input class="form-control" class="button" type="submit" name="submit" value="S'inscrire">
                 </div>
             </form>
         </div>
+        <script>
+            console.log(validerFormulaire());
+        </script>
 
-
-        <?php
-        if (isset($_POST['submit'])) {
-            $user = new User(NULL, htmlspecialchars($_POST["login"]), $_POST["password"], htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["firstname"]), htmlspecialchars($_POST["lastname"]), htmlspecialchars($_POST["tel"]));
-            $user->register($bdd);
-            header('Location: ./index.php');
-        }
-        ?>
     </main>
 </body>
 
 </html>
+
+
+<?php
+if (isset($_POST['submit'])) {
+    $user = new User(NULL, htmlspecialchars($_POST["login"]), $_POST["password"], htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["firstname"]), htmlspecialchars($_POST["lastname"]), htmlspecialchars($_POST["tel"]));
+    $user->register($bdd);
+    header('Location: ./index.php');
+}
+?>
