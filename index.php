@@ -26,7 +26,7 @@ include("./class/User.php");
         ?>
     </header>
     <main>
-        <?php var_dump($_SESSION); ?>
+        <!-- <?php var_dump($_SESSION); ?> -->
     </main>
 </body>
 
