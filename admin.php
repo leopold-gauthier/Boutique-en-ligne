@@ -5,6 +5,11 @@ if ($_SESSION['user']->login != 'admin') {
 }
 
 // REQUETE -
+// fetch AllCateory
+$allC = $bdd->prepare("SELECT * FROM category");
+$allC->execute([]);
+$resultCategory = $allC->fetchAll(PDO::FETCH_ASSOC);
+
 // fetch man
 $man = $bdd->prepare("SELECT * FROM subcategory WHERE id_category = 1");
 $man->execute([]);
@@ -133,36 +138,68 @@ if (isset($_POST['deletecat'])) {
                     </div>
                 </div>
             </div>
-
+            <!-- PRODUIT -->
             <!-- /////// -->
             <div class="admin">
                 <h4>Ajouter/Supprimer produit</h4>
                 <div class="add">
-                    <form action="" method="post">
-                        <label for="category">Catégorie:</label>
-                        <select name="category" id="category">
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="hamster">Hamster</option>
-                            <option value="parrot">Parrot</option>
-                            <option value="spider">Spider</option>
-                            <option value="goldfish">Goldfish</option>
-                        </select>
-                        <label for="subcategory">Sous-catégorie:</label>
-                        <select name="subcategory" id="subcategory">
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="hamster">Hamster</option>
-                            <option value="parrot">Parrot</option>
-                            <option value="spider">Spider</option>
-                            <option value="goldfish">Goldfish</option>
-                        </select>
-                        <label for="name">Nom :</label>
-                        <input type="text" id="name" name="name">
-                        <label for="price">Prix :</label>
-                        <input type="text" id="price" name="price">
-                        <button type="submit" id="submit" name="addproduct"><i class="fa-solid fa-square-plus"></i></button>
-                    </form>
+                    <?php
+                    if (isset($_POST['category'])) {
+                        // fetch  id_category = ? in Subcategory
+                        $allSC = $bdd->prepare("SELECT * FROM subcategory WHERE id_category = ?");
+                        $allSC->execute([$_POST['category']]);
+                        $resultsubcat = $allSC->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                        <form action="" method="post">
+                            <input type="text" disabled value='<?php
+                                                                if ($_POST['category'] == "1") {
+                                                                    echo "Homme";
+                                                                } else if ($_POST['category'] == "2") {
+                                                                    echo "Femme";
+                                                                }
+
+                                                                ?>'>
+                            <label for=" subcategory">Sous-catégorie:</label>
+                            <select name="subcategory" id="subcategory">
+                                <option value=""></option>
+                                <?php
+                                foreach ($resultsubcat as $result => $value) {
+                                ?>
+                                    <option value="<?= $value['id']; ?>"><?= $value['name']; ?></option>
+
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <label for="name">Nom :</label>
+                            <input type="text" id="name" name="name">
+                            <label for="price">Prix :</label>
+                            <input type="text" id="price" name="price">
+                            <label for="image">Images :</label>
+                            <input type="file" id="image" name="path">
+                            <button type="submit" id="submit" name="addproduct"><i class="fa-solid fa-square-plus"></i></button>
+                            <a href="./admin.php">Annulé</a>
+                        </form>
+
+                    <?php
+                    } else { ?>
+
+                        <h5>Veuillez choisir un genre avant de pouvoir ajouter un produit</h5>
+                        <form action="" method="post">
+                            <label for="categorie">Catégorie :</label>
+                            <select name="category" id="categorie">
+                                <option value=""></option>
+                                <?php
+                                foreach ($resultCategory as $result => $value) { ?>
+                                    <option value="<?= $value['id']; ?>"><?= $value['name']; ?></option>
+                                <?php }
+                                ?>
+                            </select>
+                            <input type="submit" value="Valider">
+                        </form>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </main>
