@@ -1,4 +1,12 @@
-<?php ?>
+<?php
+// REQUETE --
+// fetch man
+$category = $bdd->prepare("SELECT * FROM category");
+$category->execute([]);
+$resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
+
+
+?>
 <nav id="nav" class="navbar navbar-expand-lg bg-body-light">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,12 +18,14 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="./index.php">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./hommes.php">Hommes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./femmes.php">Femmes</a>
-                </li>
+                <?php
+                foreach ($resultcategory as $result => $value) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./boutique.php?<?= $value['name'] ?>"><?= $value['name'] ?></a>
+                    </li>
+                <?php
+                }
+                ?>
                 <?php if (!empty($_SESSION) && $_SESSION['user']->login == "admin") { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="./admin.php">Admin</a>

@@ -3,6 +3,8 @@ include_once("./class/User.php");
 if ($_SESSION['user']->login != 'admin') {
     header("Location: ./index.php");
 }
+
+// REQUETE -
 // fetch man
 $man = $bdd->prepare("SELECT * FROM subcategory WHERE id_category = 1");
 $man->execute([]);
@@ -27,6 +29,7 @@ if (isset($_POST['deletecat'])) {
     header("Location: ./admin.php");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,9 +57,9 @@ if (isset($_POST['deletecat'])) {
                 <div class="add">
                     <form action="" method="post" onsubmit="return verifCat()">
                         <label for="man">Homme</label>
-                        <input type="radio" value="1" id="genre" name="genre">
+                        <input type="radio" value="1" id="man" name="genre">
                         <label for="woman">Femme</label>
-                        <input type="radio" value="2" id="genre" name="genre">
+                        <input type="radio" value="2" id="woman" name="genre">
                         <label for="name">Nom :</label>
                         <input type="text" id="name" name="name">
                         <button type="submit" id="submit" name="addcat"><i class="fa-solid fa-square-plus"></i></button>
@@ -68,45 +71,76 @@ if (isset($_POST['deletecat'])) {
                         <h5>Homme</h5>
                         <?php foreach ($resultman as $result => $value) {
                         ?>
-                            <form method="post">
-                                <div class="btn btn-secondary"><?= $value["name"]; ?>
-                                    <button value="<?= $value['id'] ?>" type="submit" name="deletecat">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                            <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalsecurity">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">Êtes-vous sur !</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Ajoutez ici les éléments de votre formulaire de filtrage  -->
+                                            <p>Voulez vous vraiment supprimer cet sous-catégorie ?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="post">
+                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deletecat" data-bs-dismiss="modal">Confirmer</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         <?php } ?>
                     </div>
                     <div id="v_woman">
                         <h5>Femme</h5>
-                        <?php foreach ($resultwoman as $result => $value) { ?>
-                            <button type="button" class="btn btn-secondary"><?= $value["name"]; ?></button>
+                        <?php foreach ($resultwoman as $result => $value) {
+                        ?>
 
-                        <?php
-                        } ?>
+                            <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalsecurity">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">Êtes-vous sur !</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Ajoutez ici les éléments de votre formulaire de filtrage -->
+                                            <p>Voulez vous vraiment supprimer cet sous-catégorie ?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="post">
+                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deletecat" data-bs-dismiss="modal">Confirmer</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php } ?>
                     </div>
                 </div>
             </div>
-            <!-- modal -->
-            <div id="confirmationModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Confirmation de suppression</h2>
-                    </div>
-                    <div class="modal-body"></div>
-                    <div class="modal-footer">
-                        <button id="confirmDeleteBtn">Confirmer</button>
-                        <button onclick="closeConfirmationModal()">Annuler</button>
-                    </div>
-                </div>
-            </div>
+
             <!-- /////// -->
             <div class="admin">
                 <h4>Ajouter/Supprimer produit</h4>
                 <div class="add">
                     <form action="" method="post">
-                        <label for="pet-select">Catégorie:</label>
-                        <select name="pets" id="pet-select">
+                        <label for="category">Catégorie:</label>
+                        <select name="category" id="category">
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="hamster">Hamster</option>
@@ -114,8 +148,8 @@ if (isset($_POST['deletecat'])) {
                             <option value="spider">Spider</option>
                             <option value="goldfish">Goldfish</option>
                         </select>
-                        <label for="pet-select">Sous-catégorie:</label>
-                        <select name="pets" id="pet-select">
+                        <label for="subcategory">Sous-catégorie:</label>
+                        <select name="subcategory" id="subcategory">
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="hamster">Hamster</option>
