@@ -1,5 +1,7 @@
 <?php
+ob_start();
 include_once("./class/User.php");
+include_once("./class/Product.php");
 if ($_SESSION['user']->login != 'admin') {
     header("Location: ./index.php");
 }
@@ -9,6 +11,14 @@ if ($_SESSION['user']->login != 'admin') {
 $allC = $bdd->prepare("SELECT * FROM category");
 $allC->execute([]);
 $resultCategory = $allC->fetchAll(PDO::FETCH_ASSOC);
+
+//fetch product
+$product = $bdd->prepare("SELECT * , product.id
+FROM product
+INNER JOIN subcategory ON product.id_subcategory = subcategory.id;
+");
+$product->execute([]);
+$resultProduct = $product->fetchAll(PDO::FETCH_ASSOC);
 
 // fetch man
 $man = $bdd->prepare("SELECT * FROM subcategory WHERE id_category = 1");
@@ -35,6 +45,19 @@ if (isset($_POST['deletecat'])) {
 }
 
 
+if (isset($_POST['addproduct'])) {
+    $Product = new Product(
+        "",
+        $_POST['subcategory'],
+        $_POST['name'],
+        $_POST['description'],
+        $_POST['quantity'],
+        $_POST['price'],
+        ""
+    );
+    $Product->register($bdd);
+    header("Location: ./admin.php");
+}
 
 
 
@@ -214,6 +237,47 @@ if (isset($_POST['deletecat'])) {
                     }
                     ?>
                 </div>
+                <div class="view">
+                    <div class="v_product">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Sous-Catégorie</th>
+                                    <th>Descriptif</th>
+                                    <th>Prix</th>
+                                    <th>Quantité</th>
+                                    <th>Supprimer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($resultProduct as $result => $value) { ?>
+                                    <tr>
+                                        <td><?= $value['id'] ?></td>
+                                        <td><?= $value['product'] ?></td>
+                                        <td><?= $value['name'] ?></td>
+                                        <td><?= $value['description'] ?></td>
+                                        <td><?= $value['price'] ?></td>
+                                        <td><?= $value['quantity'] ?></td>
+                                        <td>
+                                            <form method="POST">
+                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod">Confirmer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    if (isset($_POST['deleteprod'])) {
+                                        $product = new Product($_POST['deleteprod'], "", "", "", "", "", "");
+                                        $product->delete($bdd);
+                                        header("Location: ./admin.php");
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
         <footer>
@@ -221,49 +285,6 @@ if (isset($_POST['deletecat'])) {
         </footer>
     </div>
     <?php
-    if (isset($_POST['addproduct'])) {
-        $quantity = $_POST['quantity'];
-        $subcategory = $_POST['subcategory'];
-        $name = $_POST['name'];
-        $desc = $_POST['description'];
-        $price = $_POST['price'];
-
-        // Chemin du dossier de destination
-        $targetDirectory = './product_image/';
-
-        // Nom du fichier
-        $fileName = $_FILES['image']['name'];
-        // Chemin complet du fichier de destination
-        $targetFilePath = $targetDirectory . $fileName;
-
-        // Déplacer le fichier téléchargé vers le dossier de destination
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-            // Le fichier a été déplacé avec succès, effectuer l'insertion en base de données
-
-            // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
-
-            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path`, `id_subcategory`) VALUES (?, ?, ?, ?, ?, ?);");
-            $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $subcategory]);
-
-            // Récupérer l'ID du dernier enregistrement inséré
-            $lastInsertedId = $bdd->lastInsertId();
-
-            // Nouveau nom de fichier avec l'ID du produit
-            $newFileName = $lastInsertedId . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFilePath = $targetDirectory . $newFileName;
-            // Renommer le fichier avec l'ID du produit
-            if (rename($targetFilePath, $newFilePath)) {
-                // Mettre à jour l'enregistrement avec le nouveau chemin de l'image associé
-                $updateRequete = $bdd->prepare("UPDATE `product` SET `path` = ? WHERE `id` = ?");
-                $updateRequete->execute([$newFilePath, $lastInsertedId]);
-
-                // Faites d'autres actions si nécessaire après l'insertion en base de données
-
-            } else {
-            }
-        } else {
-        }
-    }
 
 
 
