@@ -33,6 +33,11 @@ if (isset($_POST['deletecat'])) {
     $requete->execute([$_POST['deletecat']]);
     header("Location: ./admin.php");
 }
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +61,8 @@ if (isset($_POST['deletecat'])) {
     </header>
     <div id="container">
         <main>
-            <h3>Admin</h3>
+            <h3>Admin place</h3>
+            <hr>
             <div class="admin">
                 <h4>Ajouter/Supprimer sous-catégorie</h4>
                 <div class="add">
@@ -136,11 +142,12 @@ if (isset($_POST['deletecat'])) {
 
                         <?php } ?>
                     </div>
+                    <HR>
                 </div>
             </div>
             <!-- PRODUIT -->
             <!-- /////// -->
-            <div class="admin">
+            <div class="admin mt-3">
                 <h4>Ajouter/Supprimer produit</h4>
                 <div class="add">
                     <?php
@@ -150,17 +157,18 @@ if (isset($_POST['deletecat'])) {
                         $allSC->execute([$_POST['category']]);
                         $resultsubcat = $allSC->fetchAll(PDO::FETCH_ASSOC);
                     ?>
-                        <form action="" method="post">
-                            <input type="text" disabled value='<?php
-                                                                if ($_POST['category'] == "1") {
-                                                                    echo "Homme";
-                                                                } else if ($_POST['category'] == "2") {
-                                                                    echo "Femme";
-                                                                }
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <label for=" genre">Genre :</label>
+                            <input id="genre" class="form-control" type="text" name="genre" disabled value='<?php
+                                                                                                            if ($_POST['category'] == "1") {
+                                                                                                                echo "Homme";
+                                                                                                            } else if ($_POST['category'] == "2") {
+                                                                                                                echo "Femme";
+                                                                                                            }
 
-                                                                ?>'>
+                                                                                                            ?>'>
                             <label for=" subcategory">Sous-catégorie:</label>
-                            <select name="subcategory" id="subcategory">
+                            <select class="form-control" name="subcategory" id="subcategory">
                                 <option value=""></option>
                                 <?php
                                 foreach ($resultsubcat as $result => $value) {
@@ -172,16 +180,21 @@ if (isset($_POST['deletecat'])) {
                                 ?>
                             </select>
                             <label for="name">Nom :</label>
-                            <input type="text" id="name" name="name">
+                            <input class="form-control" type="text" id="name" name="name">
+                            <label for="description">Description :</label>
+                            <textarea class="form-control" id="desc" name="description"></textarea>
                             <label for="price">Prix :</label>
-                            <input type="text" id="price" name="price">
+                            <input class="form-control" type="number" step="0.01" id="price" name="price">
+                            <label for="quantity">Quantité :</label>
+                            <input class="form-control" type="number" id="quantity" name="quantity">
                             <label for="image">Images :</label>
-                            <input type="file" id="image" name="path">
-                            <button type="submit" id="submit" name="addproduct"><i class="fa-solid fa-square-plus"></i></button>
+                            <input class="form-control" type="file" id="image" name="image">
+                            <button class="form-control bg-secondary" type="submit" id="submit" name="addproduct"><i class="fa-solid fa-square-plus"></i></button>
                             <a href="./admin.php">Annulé</a>
                         </form>
 
                     <?php
+
                     } else { ?>
 
                         <h5>Veuillez choisir un genre avant de pouvoir ajouter un produit</h5>
@@ -207,6 +220,55 @@ if (isset($_POST['deletecat'])) {
             <?php include_once('./include/footer_inc.php') ?>
         </footer>
     </div>
+    <?php
+    if (isset($_POST['addproduct'])) {
+        $quantity = $_POST['quantity'];
+        $subcategory = $_POST['subcategory'];
+        $name = $_POST['name'];
+        $desc = $_POST['description'];
+        $price = $_POST['price'];
+
+        // Chemin du dossier de destination
+        $targetDirectory = './product_image/';
+
+        // Nom du fichier
+        $fileName = $_FILES['image']['name'];
+        // Chemin complet du fichier de destination
+        $targetFilePath = $targetDirectory . $fileName;
+
+        // Déplacer le fichier téléchargé vers le dossier de destination
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
+            // Le fichier a été déplacé avec succès, effectuer l'insertion en base de données
+
+            // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
+
+            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path`, `id_subcategory`) VALUES (?, ?, ?, ?, ?, ?);");
+            $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $subcategory]);
+
+            // Récupérer l'ID du dernier enregistrement inséré
+            $lastInsertedId = $bdd->lastInsertId();
+
+            // Nouveau nom de fichier avec l'ID du produit
+            $newFileName = $lastInsertedId . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+            $newFilePath = $targetDirectory . $newFileName;
+            // Renommer le fichier avec l'ID du produit
+            if (rename($targetFilePath, $newFilePath)) {
+                // Mettre à jour l'enregistrement avec le nouveau chemin de l'image associé
+                $updateRequete = $bdd->prepare("UPDATE `product` SET `path` = ? WHERE `id` = ?");
+                $updateRequete->execute([$newFilePath, $lastInsertedId]);
+
+                // Faites d'autres actions si nécessaire après l'insertion en base de données
+
+            } else {
+            }
+        } else {
+        }
+    }
+
+
+
+
+    ?>
 </body>
 
 </html>
