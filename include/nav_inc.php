@@ -21,7 +21,7 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                 <?php
                 foreach ($resultcategory as $result => $value) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./boutique.php?<?= $value['name'] ?>"><?= $value['name'] ?></a>
+                        <a class="nav-link" href="./boutique.php?type=<?= $value['id'] ?>"><?= $value['name'] ?></a>
                     </li>
                 <?php
                 }
