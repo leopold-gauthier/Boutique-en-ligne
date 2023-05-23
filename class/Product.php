@@ -47,7 +47,7 @@ class Product
 
             // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
 
-            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path`, `id_subcategory`) VALUES (?, ?, ?, ?, ?, ?);");
+            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path` ,`id_subcategory`) VALUES ( ?, ?, ?, ?, ?, ?);");
             $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $subcategory]);
 
             // Récupérer l'ID du dernier enregistrement inséré
