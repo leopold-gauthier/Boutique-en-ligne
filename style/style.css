@@ -28,6 +28,10 @@ h6{
 
 /*//////////////////admin///////////////////*/
 
+
+.btn{
+    margin-top: 5px;
+}
 .add{
     padding-top: 20px;
     padding-bottom: 50px;
@@ -64,3 +68,11 @@ hr{
     padding: 8px;
 }
 
+
+/*///////////////////nav/////////////////////*/
+
+
+.container-fluid ul li:hover{
+    background-color: rgb(163, 170, 170);
+    border-radius: 10%;
+}
