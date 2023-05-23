@@ -17,7 +17,16 @@ INNER JOIN category ON subcategory.id_category = category.id WHERE id_category =
 } else {
     header("Location: ./index.php");
 }
-
+// fetch category
+if (isset($_GET['cat'])) {
+    $product = $bdd->prepare("SELECT product.*, category.*, subcategory.*
+FROM product
+INNER JOIN subcategory ON product.id_subcategory = subcategory.id
+INNER JOIN category ON subcategory.id_category = category.id WHERE id_category = ? AND id_subcategory = ?;
+");
+    $product->execute([$_GET['type'], $_GET['cat']]);
+    $resultproduct = $product->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 // fetch man
@@ -64,10 +73,17 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                 <div id="man">
                     <h3>Hommes</h3>
                     <div class="categorie">
+                        <a href="./boutique.php?type=1">
+                            <div class="btn btn-secondary">
+                                Tous
+                            </div>
+                        </a>
                         <?php foreach ($resultman as $result => $value) {
                         ?>
-                            <div class="btn btn-secondary"><?= $value["name"]; ?>
-                            </div>
+                            <a href="./boutique.php?type=1&cat=<?= $value["id"]; ?>">
+                                <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
@@ -75,24 +91,23 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                     include_once('./include/filter_modal-inc.php');
                     ?>
                 </div>
-                <div class="produit">
+                <div class="produit d-inline-flex">
                     <?php
-                    foreach ($resultproduct as $result => $value) {
-                        var_dump($value) ?>
-                        <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
+                    foreach ($resultproduct as $result => $value) { ?>
+                        <div class="card" style="width: 10vw;">
+                            <img src="<?= $value['path'] ?>" style="height: 15vw;" class=" card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <h5 class="card-title"><?= $value['product'] ?></h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                                <li class="list-group-item">Prix :&nbsp;
+                                    <?= $value['price'] ?>€</li>
+                                <li class="list-group-item">Quantité :&nbsp;
+                                    <?= $value['quantity'] ?></li>
                             </ul>
                             <div class="card-body">
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                                <a href="#" class="card-link">Panier</a>
+                                <a href="#" class="card-link">Détails</a>
                             </div>
                         </div>
                     <?php
@@ -111,10 +126,17 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                 <div id="woman">
                     <h3>Femmes</h3>
                     <div class="categorie">
+                        <a href="./boutique.php?type=2">
+                            <div class="btn btn-secondary">
+                                Tous
+                            </div>
+                        </a>
                         <?php foreach ($resultwoman as $result => $value) {
                         ?>
-                            <div class="btn btn-secondary"><?= $value["name"]; ?>
-                            </div>
+                            <a href="./boutique.php?type=2&cat=<?= $value["id"]; ?>">
+                                <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
@@ -124,9 +146,28 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
 
 
                 </div>
-                <div class="manpct_t"></div>
-                <div class="manpct_b"></div>
-
+                <div class="produit">
+                    <?php
+                    foreach ($resultproduct as $result => $value) { ?>
+                        <div class="card" style="width: 10rem;">
+                            <img src="<?= $value['path'] ?>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $value['product'] ?></h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Prix :&nbsp;
+                                    <?= $value['price'] ?>€</li>
+                                <li class="list-group-item">Quantité :&nbsp;
+                                    <?= $value['quantity'] ?></li>
+                            </ul>
+                            <div class="card-body">
+                                <a href="#" class="card-link">Panier</a>
+                                <a href="#" class="card-link">Détails</a>
+                            </div>
+                        </div>
+                    <?php
+                    } ?>
+                </div>
 
             </div>
         <?php
