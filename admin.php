@@ -71,7 +71,8 @@ if (isset($_POST['deletecat'])) {
             <h3>Admin place</h3>
             <hr>
             <div class="admin">
-                <h4>Ajouter/Supprimer sous-catégorie</h4>
+            <h3>Ajouter/Supprimer sous-catégorie</h3>
+                <h4>Ajouter sous-catégorie </h4>
                 <div class="add">
                     <form action="" method="post" onsubmit="return verifCat()">
                         <label for="man">Homme</label>
@@ -86,6 +87,7 @@ if (isset($_POST['deletecat'])) {
                 </div>
                 <div class="view">
                     <div id="v_man">
+                    <h4>Supprimer sous-catégorie </h4>
                         <h5>Homme</h5>
                         <?php foreach ($resultman as $result => $value) {
                         ?>
@@ -159,7 +161,8 @@ if (isset($_POST['deletecat'])) {
             <!-- PRODUIT -->
             <!-- /////// -->
             <div class="admin mt-3">
-                <h4>Ajouter/Supprimer produit</h4>
+                <h3>Ajouter/Supprimer un produit</h3>
+                <h4>Ajouter produit</h4>
                 <div class="add">
                     <?php
                     if (isset($_POST['category'])) {
@@ -200,7 +203,7 @@ if (isset($_POST['deletecat'])) {
                             <input class="form-control" type="number" id="quantity" name="quantity">
                             <label for="image">Images :</label>
                             <input class="form-control" type="file" id="image" name="image">
-                            <button class="form-control bg-secondary" type="submit" id="submit" name="addproduct"><i class="fa-solid fa-square-plus"></i></button>
+                            <button class="form-control bg-secondary" type="submit" id="submit" name="addproduct">Ajouter produit &nbsp;<i class="fa-solid fa-square-plus"></i></button>
                             <a href="./admin.php">Annulé</a>
                         </form>
 
@@ -208,7 +211,7 @@ if (isset($_POST['deletecat'])) {
 
                     } else { ?>
 
-                        <h5>Veuillez choisir un genre avant de pouvoir ajouter un produit</h5>
+                        <h5>Veuillez choisir un genre avant de pouvoir ajouter un produit :</h5>
                         <form action="" method="post">
                             <label for="categorie">Catégorie :</label>
                             <select name="category" id="categorie">
@@ -227,16 +230,17 @@ if (isset($_POST['deletecat'])) {
                 </div>
                 <div class="view">
                     <div class="v_product">
-                        <table>
+                        <h5>Supprimer un produit :</h5>
+                        <table class="my-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Nom</th>
-                                    <th>Sous-Catégorie</th>
-                                    <th>Descriptif</th>
-                                    <th>Prix</th>
-                                    <th>Quantité</th>
-                                    <th>Supprimer</th>
+                                    <th class="table-heading">ID</th>
+                                    <th class="table-heading">Nom</th>
+                                    <th class="table-heading">Sous-Catégorie</th>
+                                    <th class="table-heading">Descriptif</th>
+                                    <th class="table-heading">Prix</th>
+                                    <th class="table-heading">Quantité</th>
+                                    <th class="table-heading">Supprimer</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -251,7 +255,7 @@ if (isset($_POST['deletecat'])) {
                                         <td><?= $value['quantity'] ?></td>
                                         <td>
                                             <form method="POST">
-                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod">Confirmer</button>
+                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
