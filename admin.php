@@ -30,7 +30,6 @@ $woman = $bdd->prepare("SELECT * FROM subcategory WHERE id_category = 2");
 $woman->execute([]);
 $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
 
-
 if (isset($_POST['addcat'])) {
     if (!empty($_POST['genre']) && !empty($_POST['name'])) {
         $requete = $bdd->prepare("INSERT INTO subcategory (id_category , name) VALUES ( ? , ?);");
@@ -41,21 +40,6 @@ if (isset($_POST['addcat'])) {
 if (isset($_POST['deletecat'])) {
     $requete = $bdd->prepare("DELETE FROM subcategory WHERE id = ?");
     $requete->execute([$_POST['deletecat']]);
-    header("Location: ./admin.php");
-}
-
-
-if (isset($_POST['addproduct'])) {
-    $Product = new Product(
-        "",
-        $_POST['subcategory'],
-        $_POST['name'],
-        $_POST['description'],
-        $_POST['quantity'],
-        $_POST['price'],
-        ""
-    );
-    $Product->register($bdd);
     header("Location: ./admin.php");
 }
 
@@ -106,12 +90,12 @@ if (isset($_POST['addproduct'])) {
                         <?php foreach ($resultman as $result => $value) {
                         ?>
                             <div class="btn btn-secondary"><?= $value["name"]; ?>
-                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity" type="button">
+                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="modalsecurity">
+                            <div class="modal fade" id="modalsecurity<?= $value['id'] ?>">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -130,7 +114,9 @@ if (isset($_POST['addproduct'])) {
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php
+
+                        } ?>
                     </div>
                     <div id="v_woman">
                         <h5>Femme</h5>
@@ -138,12 +124,13 @@ if (isset($_POST['addproduct'])) {
                         ?>
 
                             <div class="btn btn-secondary"><?= $value["name"]; ?>
-                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity" type="button">
+                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
+
                             <!-- Modal -->
-                            <div class="modal fade" id="modalsecurity">
+                            <div class="modal fade" id="modalsecurity<?= $value['id'] ?>">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -162,8 +149,9 @@ if (isset($_POST['addproduct'])) {
                                     </div>
                                 </div>
                             </div>
+                        <?php
 
-                        <?php } ?>
+                        } ?>
                     </div>
                     <HR>
                 </div>
@@ -252,7 +240,8 @@ if (isset($_POST['addproduct'])) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($resultProduct as $result => $value) { ?>
+                                <?php foreach ($resultProduct as $result => $value) {
+                                ?>
                                     <tr>
                                         <td><?= $value['id'] ?></td>
                                         <td><?= $value['product'] ?></td>
@@ -268,10 +257,24 @@ if (isset($_POST['addproduct'])) {
                                     </tr>
                                 <?php
                                     if (isset($_POST['deleteprod'])) {
-                                        $product = new Product($_POST['deleteprod'], "", "", "", "", "", "");
+                                        $product = new Product($_POST['deleteprod'], "", "", "", "", "", "", "");
                                         $product->delete($bdd);
                                         header("Location: ./admin.php");
                                     }
+                                }
+
+                                if (isset($_POST['addproduct'])) {
+                                    $Product = new Product(
+                                        NULL,
+                                        $_POST['subcategory'],
+                                        $_POST['name'],
+                                        $_POST['description'],
+                                        $_POST['quantity'],
+                                        $_POST['price'],
+                                        ""
+                                    );
+                                    $Product->register($bdd);
+                                    header("Location: ./admin.php");
                                 }
                                 ?>
                             </tbody>
@@ -284,12 +287,6 @@ if (isset($_POST['addproduct'])) {
             <?php include_once('./include/footer_inc.php') ?>
         </footer>
     </div>
-    <?php
-
-
-
-
-    ?>
 </body>
 
 </html>
