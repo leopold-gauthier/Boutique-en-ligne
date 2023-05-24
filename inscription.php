@@ -63,9 +63,6 @@ include("./class/User.php");
                 </div>
             </form>
         </div>
-        <script>
-            console.log(validerFormulaire());
-        </script>
 
     </main>
 </body>
