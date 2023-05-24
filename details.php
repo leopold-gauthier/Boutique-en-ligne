@@ -1,9 +1,7 @@
 <?php
 ob_start();
-include_once('./class/User.php');
-if (empty($_SESSION)) {
-    header("Location: ./index.php");
-}
+include_once("./class/User.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -14,11 +12,20 @@ if (empty($_SESSION)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/style.css">
-    <title>Panier</title>
+    <?php include_once("./include/head_inc.php") ?>
+    <title>Infos</title>
 </head>
 
 <body>
+    <header>
+        <?php include_once("./include/nav_inc.php") ?>
+    </header>
+    <main>
 
+    </main>
+    <footer>
+        <?php include_once("./include/footer_inc.php") ?>
+    </footer>
 </body>
 
 </html>
