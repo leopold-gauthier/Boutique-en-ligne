@@ -2,7 +2,6 @@
 ob_start();
 include_once('./class/User.php');
 
-
 // REQUETE --
 
 // fetch product
@@ -21,7 +20,7 @@ INNER JOIN category ON subcategory.id_category = category.id WHERE id_category =
 
 // fetch category
 if (isset($_GET['cat'])) {
-    $product = $bdd->prepare("SELECT product.*, category.*, subcategory.*
+    $product = $bdd->prepare("SELECT product.id as product_id ,product.*, category.*, subcategory.*
 FROM product
 INNER JOIN subcategory ON product.id_subcategory = subcategory.id
 INNER JOIN category ON subcategory.id_category = category.id WHERE id_category = ? AND id_subcategory = ?;
@@ -90,7 +89,7 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
         <?php
         if ($_GET['type'] == 1) { ?>
             <div id="container">
-            <h3>Hommes</h3>
+                <h3>Hommes</h3>
                 <div id="man">
                     <div class="categorie">
                         <a href="./boutique.php?type=1">
@@ -126,9 +125,16 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                                     <?= $value['quantity'] ?></li>
                             </ul>
                             <div class="card-body">
-                                <form method="post">
-                                    <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier </button>
-                                </form>
+                                <?php
+                                if (!empty($_SESSION)) { ?>
+                                    <form method="post">
+                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier </button>
+                                    </form>
+                                <?php
+                                } else { ?>
+                                    <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
+                                <?php }
+                                ?>
                                 <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
                             </div>
                         </div>
@@ -144,7 +150,7 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
         <?php
         } else if ($_GET['type'] == 2) { ?>
             <div id="container">
-            <h3>Femmes</h3>
+                <h3>Femmes</h3>
                 <div id="woman">
                     <div class="categorie">
                         <a href="./boutique.php?type=2">
@@ -157,7 +163,7 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                             <a href="./boutique.php?type=2&cat=<?= $value["id"]; ?>">
                                 <div class="btn btn-secondary"><?= $value["name"]; ?>
                                 </div>
-                            </a>                           
+                            </a>
                         <?php } ?>
                         <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                     </div>
@@ -182,8 +188,18 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                                     <?= $value['quantity'] ?></li>
                             </ul>
                             <div class="card-body">
-                                <a href="#" class="card-link">Panier</a>
-                                <a href="#" class="card-link">Détails</a>
+                                <?php
+                                if (!empty($_SESSION)) {
+                                ?>
+                                    <form method="post">
+                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
+                                    </form>
+                                <?php
+                                } else { ?>
+                                    <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
+                                <?php }
+                                ?>
+                                <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
                             </div>
                         </div>
                     <?php
