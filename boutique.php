@@ -69,9 +69,8 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
         <?php
         if ($_GET['type'] == 1) { ?>
             <div id="container">
-
+            <h3>Hommes</h3>
                 <div id="man">
-                    <h3>Hommes</h3>
                     <div class="categorie">
                         <a href="./boutique.php?type=1">
                             <div class="btn btn-secondary">
@@ -85,8 +84,8 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </a>
                         <?php } ?>
+                        <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                     </div>
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                     <?php
                     include_once('./include/filter_modal-inc.php');
                     ?>
@@ -122,9 +121,8 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
         <?php
         } else if ($_GET['type'] == 2) { ?>
             <div id="container">
-
+            <h3>Femmes</h3>
                 <div id="woman">
-                    <h3>Femmes</h3>
                     <div class="categorie">
                         <a href="./boutique.php?type=2">
                             <div class="btn btn-secondary">
@@ -136,10 +134,10 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                             <a href="./boutique.php?type=2&cat=<?= $value["id"]; ?>">
                                 <div class="btn btn-secondary"><?= $value["name"]; ?>
                                 </div>
-                            </a>
+                            </a>                           
                         <?php } ?>
+                        <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                     </div>
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                     <?php
                     include_once('./include/filter_modal-inc.php');
                     ?>

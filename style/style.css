@@ -73,9 +73,30 @@ hr{
 
 
 .container-fluid ul li:hover{
-    background-color: rgb(163, 170, 170);
+    background-color: rgb(249, 249, 249);
     border-radius: 10%;
 }
 a{
     text-decoration: none;
+}
+#logo img{
+    width: 100px;
+    height: 100px;
+}
+
+
+/*//////////////////////boutique//////////////*/
+
+
+#filter{
+    float: right;
+}
+#man{
+    padding-bottom: 10px;
+}
+#woman{
+    padding-bottom: 10px;
+}
+#container{
+    margin-left: 20px;
 }
