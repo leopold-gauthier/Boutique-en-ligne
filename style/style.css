@@ -14,6 +14,7 @@
 /*///////////////////block test///////////////*/
 
 /*////////////////footer///////////////////*/
+
 #footer{
     display: flex;
     justify-content: space-around;
@@ -22,7 +23,6 @@ h6{
     text-decoration: underline;
 }
 .border{
-    border: solid 1px;
     border: solid 1px;
 }
 
@@ -41,6 +41,7 @@ h6{
 }
 h3{
     text-align: center;
+    padding-bottom: 20px;
 }
 h4{
     padding-bottom: 30px;
@@ -99,4 +100,20 @@ a{
 }
 #container{
     margin-left: 20px;
+}
+
+
+
+/*//////////////////panier//////////////////////*/
+
+.cart{
+    padding: 20px;
+}
+.new_address{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+h5{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
