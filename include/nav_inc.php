@@ -38,8 +38,10 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="d-flex">
             <input class="form-control me-2" id="search-bar" type="search" placeholder="rechercher..." aria-label="Search">
-            <div id="result"></div>
+            <div id="suggestion-list"></div>
         </div>
+
+
         <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">

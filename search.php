@@ -1,17 +1,27 @@
 <?php
+header('Content-Type: application/json');
+include_once('./include/bdd.php');
 
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style/style.css">
-    <title>Recherche</title>
-</head>
-<body>
-    
-</body>
-</html>
+try {
+    // Requête pour récupérer toutes les informations de la table "product"
+    $sql = "SELECT * FROM product";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute();
+
+    // Créer un tableau pour stocker toutes les informations des produits
+    $produits = array();
+
+    // Parcourir les résultats de la requête et stocker les informations dans le tableau
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $produits[] = $row;
+    }
+
+    // Fermer la connexion à la base de données
+    $bdd = null;
+
+    // Renvoyer les données en tant que réponse JSON
+    echo json_encode($produits);
+} catch (PDOException $e) {
+    die("Erreur lors de la connexion à la base de données : " . $e->getMessage());
+}
