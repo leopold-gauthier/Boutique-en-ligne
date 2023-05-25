@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 include_once('./include/bdd.php');
 
-
 try {
     // Requête pour récupérer toutes les informations de la table "product"
     $sql = "SELECT * FROM product";

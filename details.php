@@ -21,7 +21,9 @@ include_once("./class/User.php");
         <?php include_once("./include/nav_inc.php") ?>
     </header>
     <main>
+        <div class="container">
 
+        </div>
     </main>
     <footer>
         <?php include_once("./include/footer_inc.php") ?>

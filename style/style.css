@@ -1,5 +1,6 @@
 
 /*////////////////footer///////////////////*/
+
 #footer{
     display: flex;
     justify-content: space-around;
@@ -9,8 +10,8 @@ h6{
 }
 .border{
     border: solid 1px;
-    border: solid 1px;
 }
+
 
 /*//////////////////admin///////////////////*/
 
@@ -27,6 +28,7 @@ h6{
 }
 h3{
     text-align: center;
+    padding-bottom: 20px;
 }
 h4{
     padding-bottom: 30px;
@@ -104,4 +106,17 @@ p{
     flex-direction: column;
     margin-top: 40px;
     position: absolute;
+}
+/*//////////////////panier//////////////////////*/
+
+.cart{
+    padding: 20px;
+}
+.new_address{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+h5{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

@@ -22,22 +22,24 @@ include("./class/User.php");
         <?php include_once("./include/nav_inc.php") ?>
     </header>
     <main>
-        <form action="" method="post" onsubmit="return validerFormulaire()">
-            <div class="mb-3">
-                <label class="form-label" for="name">Login: </label>
-                <input class="form-control" type="text" name="login" id="login">
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">Password: </label>
-                <input class="form-control" type="password" name="password" id="password">
-            </div>
-            <div class="mb-3">
-                <div id="erreur"></div>
-            </div>
-            <div class="mb-3">
-                <input class="form-control" type="submit" name="submit" value="Se connecter">
-            </div>
-        </form>
+        <div class="container">
+            <form action="" method="post" onsubmit="return validerFormulaire()">
+                <div class="mb-3">
+                    <label class="form-label" for="name">Login: </label>
+                    <input class="form-control" type="text" name="login" id="login">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password: </label>
+                    <input class="form-control" type="password" name="password" id="password">
+                </div>
+                <div class="mb-3">
+                    <div id="erreur"></div>
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type="submit" name="submit" value="Se connecter">
+                </div>
+            </form>
+        </div>
     </main>
 
 </body>

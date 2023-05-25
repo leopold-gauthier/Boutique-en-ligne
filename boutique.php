@@ -85,132 +85,134 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
         <?php include_once('./include/nav_inc.php'); ?>
     </header>
     <main>
-        <!------ HOMME ------>
-        <?php
-        if ($_GET['type'] == 1) { ?>
-            <div id="container">
-                <h3>Hommes</h3>
-                <div id="man">
-                    <div class="categorie">
-                        <a href="./boutique.php?type=1">
-                            <div class="btn btn-secondary">
-                                Tous
-                            </div>
-                        </a>
-                        <?php foreach ($resultman as $result => $value) {
-                        ?>
-                            <a href="./boutique.php?type=1&cat=<?= $value["id"]; ?>">
-                                <div class="btn btn-secondary"><?= $value["name"]; ?>
+        <div class="container">
+            <!------ HOMME ------>
+            <?php
+            if ($_GET['type'] == 1) { ?>
+                <div id="container">
+                    <h3>Hommes</h3>
+                    <div id="man">
+                        <div class="categorie">
+                            <a href="./boutique.php?type=1">
+                                <div class="btn btn-secondary">
+                                    Tous
                                 </div>
                             </a>
-                        <?php } ?>
-                        <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
-                    </div>
-                    <?php
-                    include_once('./include/filter_modal-inc.php');
-                    ?>
-                </div>
-                <div class="produit d-inline-flex">
-                    <?php
-                    foreach ($resultproduct as $result => $value) { ?>
-                        <div class="card" style="width: 10vw;">
-                            <img src="<?= $value['path'] ?>" style="height: 15vw;" class=" card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $value['product'] ?></h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Prix :&nbsp;
-                                    <?= $value['price'] ?>€</li>
-                                <li class="list-group-item">Quantité :&nbsp;
-                                    <?= $value['quantity'] ?></li>
-                            </ul>
-                            <div class="card-body">
-                                <?php
-                                if (!empty($_SESSION)) { ?>
-                                    <form method="post">
-                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier </button>
-                                    </form>
-                                <?php
-                                } else { ?>
-                                    <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
-                                <?php }
-                                ?>
-                                <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
-                            </div>
+                            <?php foreach ($resultman as $result => $value) {
+                            ?>
+                                <a href="./boutique.php?type=1&cat=<?= $value["id"]; ?>">
+                                    <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                    </div>
+                                </a>
+                            <?php } ?>
+                            <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                         </div>
-                    <?php
-                    } ?>
-                </div>
-
-
-
-
-            </div>
-            <!------- FEMME ------->
-        <?php
-        } else if ($_GET['type'] == 2) { ?>
-            <div id="container">
-                <h3>Femmes</h3>
-                <div id="woman">
-                    <div class="categorie">
-                        <a href="./boutique.php?type=2">
-                            <div class="btn btn-secondary">
-                                Tous
-                            </div>
-                        </a>
-                        <?php foreach ($resultwoman as $result => $value) {
+                        <?php
+                        include_once('./include/filter_modal-inc.php');
                         ?>
-                            <a href="./boutique.php?type=2&cat=<?= $value["id"]; ?>">
-                                <div class="btn btn-secondary"><?= $value["name"]; ?>
+                    </div>
+                    <div class="produit d-inline-flex">
+                        <?php
+                        foreach ($resultproduct as $result => $value) { ?>
+                            <div class="card" style="width: 10vw;">
+                                <img src="<?= $value['path'] ?>" style="height: 15vw;" class=" card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= $value['product'] ?></h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Prix :&nbsp;
+                                        <?= $value['price'] ?>€</li>
+                                    <li class="list-group-item">Quantité :&nbsp;
+                                        <?= $value['quantity'] ?></li>
+                                </ul>
+                                <div class="card-body">
+                                    <?php
+                                    if (!empty($_SESSION)) { ?>
+                                        <form method="post">
+                                            <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier </button>
+                                        </form>
+                                    <?php
+                                    } else { ?>
+                                        <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
+                                    <?php }
+                                    ?>
+                                    <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
+                                </div>
+                            </div>
+                        <?php
+                        } ?>
+                    </div>
+
+
+
+
+                </div>
+                <!------- FEMME ------->
+            <?php
+            } else if ($_GET['type'] == 2) { ?>
+                <div id="container">
+                    <h3>Femmes</h3>
+                    <div id="woman">
+                        <div class="categorie">
+                            <a href="./boutique.php?type=2">
+                                <div class="btn btn-secondary">
+                                    Tous
                                 </div>
                             </a>
-                        <?php } ?>
-                        <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
-                    </div>
-                    <?php
-                    include_once('./include/filter_modal-inc.php');
-                    ?>
-
-
-                </div>
-                <div class="produit d-inline-flex">
-                    <?php
-                    foreach ($resultproduct as $result => $value) { ?>
-                        <div class="card" style="width: 10rem;">
-                            <img style="height: 15vw;" src="<?= $value['path'] ?>" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $value['product'] ?></h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Prix :&nbsp;
-                                    <?= $value['price'] ?>€</li>
-                                <li class="list-group-item">Quantité :&nbsp;
-                                    <?= $value['quantity'] ?></li>
-                            </ul>
-                            <div class="card-body">
-                                <?php
-                                if (!empty($_SESSION)) {
-                                ?>
-                                    <form method="post">
-                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                                    </form>
-                                <?php
-                                } else { ?>
-                                    <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
-                                <?php }
-                                ?>
-                                <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
-                            </div>
+                            <?php foreach ($resultwoman as $result => $value) {
+                            ?>
+                                <a href="./boutique.php?type=2&cat=<?= $value["id"]; ?>">
+                                    <div class="btn btn-secondary"><?= $value["name"]; ?>
+                                    </div>
+                                </a>
+                            <?php } ?>
+                            <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
                         </div>
-                    <?php
-                    } ?>
-                </div>
+                        <?php
+                        include_once('./include/filter_modal-inc.php');
+                        ?>
 
-            </div>
-        <?php
-        } else if (isset($_GET[''])) {
-            header("Location: ./index.php");
-        } ?>
+
+                    </div>
+                    <div class="produit d-inline-flex">
+                        <?php
+                        foreach ($resultproduct as $result => $value) { ?>
+                            <div class="card" style="width: 10rem;">
+                                <img style="height: 15vw;" src="<?= $value['path'] ?>" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= $value['product'] ?></h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Prix :&nbsp;
+                                        <?= $value['price'] ?>€</li>
+                                    <li class="list-group-item">Quantité :&nbsp;
+                                        <?= $value['quantity'] ?></li>
+                                </ul>
+                                <div class="card-body">
+                                    <?php
+                                    if (!empty($_SESSION)) {
+                                    ?>
+                                        <form method="post">
+                                            <button value="<?= $value['product_id'] ?>" name="addcart" class="btn bg-secondary" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
+                                        </form>
+                                    <?php
+                                    } else { ?>
+                                        <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
+                                    <?php }
+                                    ?>
+                                    <a class="btn bg-secondary" href="details.php?id=<?= $value['id'] ?>" class="card-link"><i class="fa-solid fa-magnifying-glass"></i> Détails</a>
+                                </div>
+                            </div>
+                        <?php
+                        } ?>
+                    </div>
+
+                </div>
+            <?php
+            } else if (isset($_GET[''])) {
+                header("Location: ./index.php");
+            } ?>
+        </div>
     </main>
     <footer>
         <?php include_once('./include/footer_inc.php') ?>
