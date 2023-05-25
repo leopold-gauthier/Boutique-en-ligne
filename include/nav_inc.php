@@ -15,19 +15,29 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="./index.php">Accueil</a>
+                    <a class="nav-link active" aria-current="page" href="./index.php"><i class="fa-solid fa-house" style="color: #000000;"></i>&nbsp;Accueil</a>
                 </li>
                 <?php
                 foreach ($resultcategory as $result => $value) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./boutique.php?type=<?= $value['id'] ?>"><?= $value['name'] ?></a>
+                        <a class="nav-link" href="./boutique.php?type=<?= $value['id'] ?>">
+                            <?php
+                            if ($value['id'] == '1') {?>
+                                <i class="fa-solid fa-mars" style="color: #000000;"></i>
+                            <?php    echo $value['name'];
+                            ?>
+                            <?php
+                            } else if ($value['id'] == "2") {?>
+                                <i class="fa-solid fa-venus" style="color: #000000;"></i>
+                            <?php    echo $value['name'];
+                            } ?></a>
                     </li>
                 <?php
                 }
                 ?>
                 <?php if (!empty($_SESSION) && $_SESSION['user']->login == "admin") { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./admin.php">Admin</a>
+                        <a class="nav-link" href="./admin.php"><i class="fa-solid fa-user-shield" style="color: #000000;"></i></i>&nbsp;Admin</a>
                     </li>
                 <?php
                 } ?>
@@ -43,7 +53,7 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
         <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./profil.php">Compte</a>
+                    <a class="nav-link" href="./profil.php"><i class="fa-solid fa-user" style="color: #000000;"></i> &nbsp;Compte</a>
                 </li>
                 <?php
                 if (!empty($_SESSION)) {
@@ -54,7 +64,7 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                     $totalQuantity = $result['total_quantity'];
                 ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./cart.php">Panier <?= $totalQuantity; ?></a>
+                        <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier <?= $totalQuantity; ?></a>
                         <div id="nbcart"></div>
                     </li>
                 <?php

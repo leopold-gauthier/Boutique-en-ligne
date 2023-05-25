@@ -26,8 +26,15 @@ include("./class/User.php");
         ?>
     </header>
     <main>
+        <div class="best_sale">          
+        </div>
+        <div class="new_product">
+        </div>
         <!-- <?php var_dump($_SESSION); ?> -->
     </main>
 </body>
+    <footer>
+        <?php include_once('./include/footer_inc.php') ?>
+    </footer>
 
 </html>

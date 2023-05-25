@@ -13,6 +13,8 @@ if (empty($_SESSION)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">;</script>;  
+    <script src="./js/cart.js">;</script>;
     <?php
     include_once('./include/head_inc.php');
     ?>
@@ -53,21 +55,12 @@ if (empty($_SESSION)) {
                             </div>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="validationTooltip04" class="form-label">Pays</label>
-                            <select class="form-select" id="validationTooltip04" required>
-                            <option selected disabled value="">Choisir...</option>
-                            <option>...</option>
-                            </select>
-                            <div class="invalid-tooltip">
-                            Please select a valid state.
-                            </div>
-                        </div>
-                        <div class="col-md-3 position-relative">
                             <label for="validationTooltip05" class="form-label">Code postal</label>
                             <input type="text" class="form-control" id="validationTooltip05" required>
                             <div class="invalid-tooltip">
                             Please provide a valid zip.
                             </div>
+                            <p>(Livraison uniquement en france)</p>
                         </div>
                         <div class="col-12">
                             <button class="btn btn-primary" type="submit">Ajouter cette addresse</button>
