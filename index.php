@@ -16,6 +16,7 @@ include("./class/User.php");
     include_once('./include/head_inc.php');
     ?>
     <link rel="stylesheet" href="./style/style.css">
+    <script src="./js/search.js" defer></script>
     <title>Accueil</title>
 </head>
 
@@ -26,16 +27,16 @@ include("./class/User.php");
         ?>
     </header>
     <main>
-            <div class="container>">
-            <div class="best_sale">          
+        <div class="container>">
+            <div class="best_sale">
             </div>
             <div class="new_product">
             </div>
         </div>
     </main>
 </body>
-    <footer>
-        <?php include_once('./include/footer_inc.php') ?>
-    </footer>
+<footer>
+    <?php include_once('./include/footer_inc.php') ?>
+</footer>
 
 </html>

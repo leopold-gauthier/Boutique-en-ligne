@@ -90,7 +90,23 @@ a{
 }
 
 
+/* AUTOCOMPLETION */
+p{
+    margin: 1rem;
+}
+#search-bar{
+    width: 300px;
+}
 
+#suggestion-list{
+    width: 300px;
+    padding-left: 2%;
+    background-color: grey;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    position: absolute;
+}
 /*//////////////////panier//////////////////////*/
 
 .cart{
