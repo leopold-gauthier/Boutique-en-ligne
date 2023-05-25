@@ -26,11 +26,12 @@ include("./class/User.php");
         ?>
     </header>
     <main>
-        <div class="best_sale">          
+            <div class="container>">
+            <div class="best_sale">          
+            </div>
+            <div class="new_product">
+            </div>
         </div>
-        <div class="new_product">
-        </div>
-        <!-- <?php var_dump($_SESSION); ?> -->
     </main>
 </body>
     <footer>

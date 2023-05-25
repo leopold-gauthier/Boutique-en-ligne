@@ -19,28 +19,27 @@ include_once("./class/User.php")
         <?php include_once('./include/nav_inc.php') ?>
     </header>
     <main>
-
-        <?php
-        var_dump($_SESSION);
-        if ($_SESSION == NULL) { ?>
-            <div id="container">
-                <div class="button">
-                    <a href="./connexion.php">Se connecté</a>
+        <div class="container">
+            <?php
+            var_dump($_SESSION);
+            if ($_SESSION == NULL) { ?>
+                <div id="container">
+                    <div class="button">
+                        <a href="./connexion.php">Se connecté</a>
+                    </div>
+                    <div class="button">
+                        <a href="./inscription.php">Crée compte</a>
+                    </div>
                 </div>
-                <div class="button">
-                    <a href="./inscription.php">Crée compte</a>
+            <?php
+            } else if (isset($_SESSION)) { ?>
+                <div id="container">
+                    <div class="button">
+                        <a href="./deconnexion.php">Se déconnecter</a>
+                    </div>
                 </div>
-            </div>
-        <?php
-        } else if (isset($_SESSION)) { ?>
-            <div id="container">
-                <div class="button">
-                    <a href="./deconnexion.php">Se déconnecter</a>
-                </div>
-            </div>
-        <?php } ?>
-
-
+            <?php } ?>
+        </div>
     </main>
 </body>
 
