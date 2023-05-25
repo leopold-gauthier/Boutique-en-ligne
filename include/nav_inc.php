@@ -1,10 +1,9 @@
 <?php
 // REQUETE --
-// fetch man
+// fetch catégorie
 $category = $bdd->prepare("SELECT * FROM category");
 $category->execute([]);
 $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
-
 
 ?>
 <nav id="nav" class="navbar navbar-expand-lg bg-body-light">
@@ -46,9 +45,22 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                 <li class="nav-item">
                     <a class="nav-link" href="./profil.php">Compte</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./cart.php">Panier</a>
-                </li>
+                <?php
+                if (!empty($_SESSION)) {
+                    // fetch cart
+                    $cart = $bdd->prepare("SELECT SUM(quantity) AS total_quantity FROM cart WHERE id_user = ?");
+                    $cart->execute([$_SESSION['user']->id]);
+                    $result = $cart->fetch(PDO::FETCH_ASSOC);
+                    $totalQuantity = $result['total_quantity'];
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./cart.php">Panier <?= $totalQuantity; ?></a>
+                        <div id="nbcart"></div>
+                    </li>
+                <?php
+                }
+                ?>
+
             </ul>
         </div>
     </div>

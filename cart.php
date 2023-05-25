@@ -1,10 +1,14 @@
 <?php
-    ob_start();
-    include_once('./class/User.php');
+ob_start();
+include_once('./class/User.php');
+if (empty($_SESSION)) {
+    header("Location: ./index.php");
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +19,7 @@
     <link rel="stylesheet" href="./style/style.css">
     <title>Panier</title>
 </head>
+
 <body>
     <header>
         <?php include_once('./include/nav_inc.php'); ?>
@@ -93,4 +98,5 @@
         <?php include_once('./include/footer_inc.php') ?>
     </footer>
 </body>
+
 </html>

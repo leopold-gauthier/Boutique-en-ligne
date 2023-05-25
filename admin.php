@@ -71,7 +71,7 @@ if (isset($_POST['deletecat'])) {
             <h3>Admin place</h3>
             <hr>
             <div class="admin">
-            <h3>Ajouter/Supprimer sous-catégorie</h3>
+                <h3>Ajouter/Supprimer sous-catégorie</h3>
                 <h4>Ajouter sous-catégorie </h4>
                 <div class="add">
                     <form action="" method="post" onsubmit="return verifCat()">
@@ -87,7 +87,7 @@ if (isset($_POST['deletecat'])) {
                 </div>
                 <div class="view">
                     <div id="v_man">
-                    <h4>Supprimer sous-catégorie </h4>
+                        <h4>Supprimer sous-catégorie </h4>
                         <h5>Homme</h5>
                         <?php foreach ($resultman as $result => $value) {
                         ?>
@@ -160,10 +160,10 @@ if (isset($_POST['deletecat'])) {
             </div>
             <!-- PRODUIT -->
             <!-- /////// -->
-            <div class="admin mt-3">
+            <div id="add" class="admin mt-3">
                 <h3>Ajouter/Supprimer un produit</h3>
                 <h4>Ajouter produit</h4>
-                <div class="add">
+                <div id="addproduct" class="add">
                     <?php
                     if (isset($_POST['category'])) {
                         // fetch  id_category = ? in Subcategory
@@ -171,7 +171,7 @@ if (isset($_POST['deletecat'])) {
                         $allSC->execute([$_POST['category']]);
                         $resultsubcat = $allSC->fetchAll(PDO::FETCH_ASSOC);
                     ?>
-                        <form action="" method="post" enctype="multipart/form-data">
+                        <form id="formadd" action="" method="post" enctype="multipart/form-data">
                             <label for=" genre">Genre :</label>
                             <input id="genre" class="form-control" type="text" name="genre" disabled value='<?php
                                                                                                             if ($_POST['category'] == "1") {
