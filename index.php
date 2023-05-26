@@ -16,7 +16,6 @@ include("./class/User.php");
     include_once('./include/head_inc.php');
     ?>
     <link rel="stylesheet" href="./style/style.css">
-    <script src="./js/search.js" defer></script>
     <title>Accueil</title>
 </head>
 

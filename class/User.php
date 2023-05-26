@@ -80,6 +80,94 @@ class User
     // ___________________________________ //
 
     // FUNCTION
+    public function findAddress($bdd)
+    {
+        $id = $_SESSION['user']->id;
+        $recupAddress = $bdd->prepare("SELECT * FROM address WHERE id_user = ?");
+        $recupAddress->execute([$id]);
+        if ($recupAddress->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function principalResidence($bdd)
+    {
+
+        $id = $_SESSION['user']->id;
+        // Si une addresse est trouvé:
+        if ($this->findAddress($bdd) == true) {
+            $recupAddressPR = $bdd->prepare("SELECT * FROM address WHERE id_user = ? AND PR = 1 ;");
+            $recupAddressPR->execute([$id]);
+            // Si une addresse principal est trouvé:
+            if ($recupAddressPR->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function getAddressPrincipal($bdd)
+    {
+        if ($this->principalResidence($bdd) == true) {
+            $id = $_SESSION['user']->id;
+            $recupAddressPR = $bdd->prepare("SELECT * FROM address WHERE id_user = ? AND PR = 1");
+            $recupAddressPR->execute([$id]);
+            $resultAddressPR = $recupAddressPR->fetch(PDO::FETCH_ASSOC);
+            return $resultAddressPR;
+        } else {
+            return true;
+        }
+    }
+
+    public function getAddressSecondary($bdd)
+    {
+        if ($this->findAddress($bdd) == true) {
+            $id = $_SESSION['user']->id;
+            $recupAddress = $bdd->prepare("SELECT * FROM address WHERE id_user = ? AND PR = 0");
+            $recupAddress->execute([$id]);
+            $resultAddress = $recupAddress->fetchAll(PDO::FETCH_ASSOC);
+            return $resultAddress;
+        } else {
+            return true;
+        }
+    }
+    public function deleteAddress($bdd)
+    {
+        // Supprimer l'addresse dans la base de données
+        $delete = $bdd->prepare("DELETE FROM address WHERE `id` = ?");
+        $delete->execute([$_POST['deleteaddress']]);
+    }
+
+    public function registerAddress($bdd)
+    {
+        // Si la résidence principal a pas été coché alors automatiquement la valeur par défault est 0
+        if (isset($_POST['rp'])) {
+            $rp = htmlspecialchars($_POST['rp']);
+        } else {
+            $rp = 0;
+        }
+        $name = htmlspecialchars($_POST['name']);
+        $street = htmlspecialchars($_POST['street']);
+        $city = htmlspecialchars($_POST['city']);
+        $zip = htmlspecialchars($_POST['zip']);
+
+        // Si une résidence principal est deja existante alors la valeur par défault est 0 a "PR"
+        if ($this->principalResidence($bdd) == true) {
+            $address = $bdd->prepare("INSERT INTO `address` (`id_user` , name_address , `PR`, `street`, `city`, `postal_code`, `country`) VALUES (?, ?, ?, ?, ?, ?, ?);");
+            $address->execute([$_SESSION['user']->id, $name, "0", $street, $city, $zip, "France"]);
+        } else {
+            $address = $bdd->prepare("INSERT INTO `address` (`id_user` , name_address , `PR`, `street`, `city`, `postal_code`, `country`) VALUES (?, ?, ?, ?, ?, ?, ?);");
+            $address->execute([$_SESSION['user']->id, $name, $rp, $street, $city, $zip, "France"]);
+        }
+
+        header("Location: ./cart.php#delivery");
+    }
+
 
     // VERIFY
     public function verify_password()

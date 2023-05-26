@@ -22,14 +22,14 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                     <li class="nav-item">
                         <a class="nav-link" href="./boutique.php?type=<?= $value['id'] ?>">
                             <?php
-                            if ($value['id'] == '1') {?>
+                            if ($value['id'] == '1') { ?>
                                 <i class="fa-solid fa-mars" style="color: #000000;"></i>
-                            <?php    echo $value['name'];
-                            ?>
+                                <?php echo $value['name'];
+                                ?>
                             <?php
-                            } else if ($value['id'] == "2") {?>
+                            } else if ($value['id'] == "2") { ?>
                                 <i class="fa-solid fa-venus" style="color: #000000;"></i>
-                            <?php    echo $value['name'];
+                            <?php echo $value['name'];
                             } ?></a>
                     </li>
                 <?php
@@ -41,7 +41,6 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                     </li>
                 <?php
                 } ?>
-
             </ul>
 
         </div>
@@ -52,29 +51,50 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
 
+
         <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="./profil.php"><i class="fa-solid fa-user" style="color: #000000;"></i> &nbsp;Compte</a>
-                </li>
                 <?php
-                if (!empty($_SESSION)) {
-                    // fetch cart
-                    $cart = $bdd->prepare("SELECT SUM(quantity) AS total_quantity FROM cart WHERE id_user = ?");
-                    $cart->execute([$_SESSION['user']->id]);
-                    $result = $cart->fetch(PDO::FETCH_ASSOC);
-                    $totalQuantity = $result['total_quantity'];
+                if ($_SESSION == NULL || empty($_SESSION)) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./connexion.php">Se Connecter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./inscription.php">Crée un Compte</a>
+                    </li>
+
+                <?php
+                } else if (isset($_SESSION['user'])) {
                 ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier <?= $totalQuantity; ?></a>
-                        <div id="nbcart"></div>
+                        <a class="nav-link" href="./deconnexion.php"><i class="fa-solid fa-right-from-bracket fa-rotate-180" style="color: #000000;"></i></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./profil.php"><i class="fa-solid fa-user" style="color: #000000;"></i> &nbsp;Compte</a>
+                    </li>
+                    <?php
+                    if (!empty($_SESSION)) {
+                        // fetch cart
+                        $cart = $bdd->prepare("SELECT SUM(quantity) AS total_quantity FROM cart WHERE id_user = ?");
+                        $cart->execute([$_SESSION['user']->id]);
+                        $result = $cart->fetch(PDO::FETCH_ASSOC);
+                        $totalQuantity = $result['total_quantity'];
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier <?= $totalQuantity; ?></a>
+                            <div id="nbcart"></div>
+                        </li>
+
+                    <?php
+                    }
+                    ?>
+
                 <?php
                 }
                 ?>
-
             </ul>
         </div>
+    </div>
     </div>
 </nav>
 <hr>
