@@ -1,5 +1,14 @@
 <?php
-include_once("./class/User.php")
+include_once("./class/User.php");
+// Vérifiez si l'utilisateur est connecté et que ses informations sont présentes dans $_SESSION
+if (isset($_SESSION['user'])) {
+    // Initialiser l'objet User avec les valeurs récupérées
+    $user = new User($_SESSION['user']->id, $_SESSION['user']->login, "", $_SESSION['user']->email, $_SESSION['user']->firstname, $_SESSION['user']->lastname, $_SESSION['user']->tel);
+} else {
+    // L'utilisateur n'est pas connecté ou ses informations ne sont pas disponibles
+    // Gérer cette situation en conséquence (redirection, affichage d'un message d'erreur, etc.)
+    header("Location: ./index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,61 +30,74 @@ include_once("./class/User.php")
     <main>
         <div class="container">
             <h3>Profil</h3>
-                <div class="profil_form">
-                        <form>
-                            <fieldset disabled>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Nom :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Prénom :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Email :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Téléphone :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Rue :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Ville :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                                <div class="mb-3">
-                                <label for="disabledTextInput" class="form-label">Code postal :</label>
-                                <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
-                            </fieldset>
-                            <a href="./edit.php"><button type="button" class="btn btn-primary"><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i>Modifier votre profil</button></a>
-                    </form>
-                </div>
-            <!--                 zone à revoir              -->
-            <?php 
-            if ($_SESSION == NULL) { ?>
-                <div id="container">
-                    <div class="button">
-                        <a href="./connexion.php">Se connecté</a>
-                    </div>
-                    <div class="button">
-                        <a href="./inscription.php">Crée compte</a>
-                    </div>
-                </div>
-                    <?php
-                    } else if (isset($_SESSION)) { ?>
-                <div id="container">
-                    <div class="button">
-                        <a href="./deconnexion.php">Se déconnecter</a>
-                    </div>
-                </div>
-            <?php } ?>
-                    <!--               fin de zone à revoir              -->
+            <div class="profil_form">
+                <form>
+                    <fieldset disabled>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Nom :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?= $user->getLastname(); ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Prénom :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?= $user->getFirstname(); ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Email :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?= $user->getEmail(); ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Téléphone :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?= $user->getTel() ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Rue :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?php
+                                                                                                        if ($user->findAddress($bdd) == true) {
+                                                                                                            if ($user->principalResidence($bdd) == true) {
+                                                                                                                $resultPR = $user->getAddressPrincipal($bdd);
+                                                                                                                echo $resultPR['street'];
+                                                                                                            } else {
+                                                                                                                echo "Aucune adresse principal trouvé";
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            echo "Aucune Adresse Trouvé";
+                                                                                                        }
+                                                                                                        ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Ville :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?php
+                                                                                                        if ($user->findAddress($bdd) == true) {
+                                                                                                            if ($user->principalResidence($bdd) == true) {
+                                                                                                                $resultPR = $user->getAddressPrincipal($bdd);
+                                                                                                                echo $resultPR['city'];
+                                                                                                            } else {
+                                                                                                                echo "Aucune adresse principal trouvé";
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            echo "Aucune Adresse Trouvé";
+                                                                                                        }
+                                                                                                        ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disabledTextInput" class="form-label">Code postal :</label>
+                            <input type="text" id="disabledTextInput" class="form-control" placeholder="<?php
+                                                                                                        if ($user->findAddress($bdd) == true) {
+                                                                                                            if ($user->principalResidence($bdd) == true) {
+                                                                                                                $resultPR = $user->getAddressPrincipal($bdd);
+                                                                                                                echo $resultPR['postal_code'];
+                                                                                                            } else {
+                                                                                                                echo "Aucune adresse principal trouvé";
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            echo "Aucune Adresse Trouvé";
+                                                                                                        }
+                                                                                                        ?>">
+                        </div>
+                    </fieldset>
+                    <a href="./edit.php"><button type="button" class="btn btn-primary"><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i>Modifier votre profil</button></a>
+                </form>
+            </div>
         </div>
     </main>
     <footer>
