@@ -61,7 +61,7 @@ hr{
 
 
 .container-fluid ul li:hover{
-    background-color: rgb(249, 249, 249);
+    background-color: rgb(255, 255, 255);
     border-radius: 10%;
 }
 a{
@@ -70,6 +70,16 @@ a{
 #logo img{
     width: 100px;
     height: 100px;
+}
+#nav .container-fluid .d-flex #suggestion-list{
+    background-color: rgba(235, 235, 235);
+}
+.d-flex #suggestion-list div{
+    background-color: rgb(235, 235, 235);
+    margin-bottom: 5px;
+}
+.d-flex #suggestion-list a:hover{
+    text-decoration: underline rgb(0, 0, 0);
 }
 
 

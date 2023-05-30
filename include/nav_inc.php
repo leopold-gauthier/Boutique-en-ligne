@@ -57,10 +57,10 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                 <?php
                 if ($_SESSION == NULL || empty($_SESSION)) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./connexion.php">Se Connecter</a>
+                        <a class="nav-link" href="./connexion.php"><i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>&nbsp;Se Connecter</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./inscription.php">Crée un Compte</a>
+                        <a class="nav-link" href="./inscription.php"><i class="fa-solid fa-user-plus" style="color: #000000;"></i>&nbsp;Crée un Compte</a>
                     </li>
 
                 <?php
@@ -82,7 +82,7 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
 
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier <?= $totalQuantity; ?></a>
+                            <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier&#40;<?= $totalQuantity; ?>&#41;</a>
                             <div id="nbcart"></div>
                         </li>
 
