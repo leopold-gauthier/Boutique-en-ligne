@@ -21,7 +21,7 @@ include("./class/User.php");
         <?php include_once("./include/nav_inc.php") ?>
     </header>
     <main>
-        <div id="container">
+        <div class="container">
             <form action="" method="post" onsubmit="return validerFormulaire()">
                 <div class="mb-3">
                     <label class="form-label" for="name">Login: </label>

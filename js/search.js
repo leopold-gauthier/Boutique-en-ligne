@@ -43,15 +43,19 @@ function autocomplete(input, data) {
           // Ajouter les nouvelles suggestions à la liste
           suggestions.forEach(function(suggestion) {
               // Créer un élément de liste pour chaque suggestion
-              let listItem = document.createElement('p');
-              listItem.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> <a class="text-decoration-none text-black" href="details.php?product='+ suggestion.id +'">' + suggestion.product;
+              var cheminImage = suggestion.path;
+                var indexDernierPoint = cheminImage.indexOf(".");
+                var nouveauCheminImage = cheminImage.slice(0, indexDernierPoint) + "./" + cheminImage.slice(indexDernierPoint);
+
+              let listItem = document.createElement('div');
+              listItem.innerHTML = '<a href="details.php?product=' + suggestion.id + '" class=" text-black"><img height="50px" src="' + nouveauCheminImage + '"/>&nbsp;' + suggestion.product + '</a>';
+
               suggestionList.appendChild(listItem);
               // Ajouter un gestionnaire d'événements pour remplir la barre de recherche avec la suggestion sélectionnée
               listItem.addEventListener('click', function() {
                   input.value = suggestion;
                   suggestionList.innerHTML = '';
               });
-
               // Ajouter l'élément de liste à la liste des suggestions
               suggestionList.appendChild(listItem);
           });
