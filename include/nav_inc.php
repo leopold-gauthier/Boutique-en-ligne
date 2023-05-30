@@ -75,10 +75,11 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                     <?php
                     if (!empty($_SESSION)) {
                         // fetch cart
-                        $cart = $bdd->prepare("SELECT SUM(quantity) AS total_quantity FROM cart WHERE id_user = ?");
-                        $cart->execute([$_SESSION['user']->id]);
-                        $result = $cart->fetch(PDO::FETCH_ASSOC);
-                        $totalQuantity = $result['total_quantity'];
+                        $carttotal = $bdd->prepare("SELECT SUM(quantity) AS total_quantity FROM cart WHERE id_user = ?");
+                        $carttotal->execute([$_SESSION['user']->id]);
+                        $resultcarttotal = $carttotal->fetch(PDO::FETCH_ASSOC);
+                        $totalQuantity = $resultcarttotal['total_quantity'];
+
                     ?>
                         <li class="nav-item">
                             <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier&#40;<?= $totalQuantity; ?>&#41;</a>
