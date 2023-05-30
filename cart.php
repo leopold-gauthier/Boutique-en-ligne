@@ -6,7 +6,7 @@ if (isset($_SESSION['user'])) {
     $user = new User($_SESSION['user']->id, $_SESSION['user']->login, "", $_SESSION['user']->email, $_SESSION['user']->firstname, $_SESSION['user']->lastname, $_SESSION['user']->tel);
 
     // si la session est active et que l'user est instancier alors place au produit
-    $cartInfo = $bdd->prepare("SELECT * , cart.quantity as cart_quantity FROM cart 
+    $cartInfo = $bdd->prepare("SELECT  * , cart.quantity as cart_quantity, cart.id as id_cart FROM cart 
     INNER JOIN product ON cart.id_product = product.id 
     WHERE cart.id_user = ?");
     $cartInfo->execute([$_SESSION['user']->id]);
@@ -16,9 +16,9 @@ if (isset($_SESSION['user'])) {
     // Gérer cette situation en conséquence (redirection, affichage d'un message d'erreur, etc.)
     header("Location: ./index.php");
 }
-if (isset($_POST['deleteprod'])) {
-    $product = new Product($_POST['deleteprod'], "", "", "", "", "", "", "");
-    $product->delete($bdd);
+if (isset($_POST['deletecart'])) {
+    $cartdelete = $bdd->prepare("DELETE FROM `cart` WHERE `cart`.`id` = ?;");
+    $cartdelete->execute([$_POST['deletecart']]);
     header("Location: ./cart.php");
 }
 if (isset($_POST['deleteaddress'])) {
@@ -59,7 +59,11 @@ if (isset($_POST['addaddress'])) {
                         <table id="table" class="my-table">
                             <thead>
                                 <tr>
-                                    <td>Vous avez (<?= $totalQuantity ?>) articles
+                                    <td>Vous avez (<?php if (empty($totalQuantity)) {
+                                                        echo 0;
+                                                    } else {
+                                                        echo $totalQuantity;
+                                                    } ?>) articles
                                     <td></td>
                                     <td></td>
                                     <td>Quantité</td>
@@ -67,25 +71,35 @@ if (isset($_POST['addaddress'])) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($resultsCart as $result => $value) {
+
+                                <?php
+                                $totalPanier = 0;
+                                foreach ($resultsCart as $result => $value) {
+                                    $quantite = intval($value['cart_quantity']);
+                                    $prix = floatval($value['price']);
+                                    $montant = $quantite * $prix;
+                                    $totalPanier += $montant;
                                 ?>
                                     <tr>
                                         <td><img height="100px" src="<?= $value['path'] ?>" /></td>
                                         <td><?= $value['product'] ?></td>
                                         <td><?= $value['description'] ?></td>
                                         <td><?= $value['cart_quantity'] ?></td>
-                                        <td><?= $value['price'] ?>€</td>
+                                        <td><?= $value['price'] * $value['cart_quantity'] ?>€</td>
                                         <td>
                                             <form method="POST">
-                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod"><i class="fa-solid fa-trash"></i></button>
+                                                <button class="btn btn-secondary" type="submit" value="<?= $value['id_cart'] ?>" name="deletecart"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
                                 <?php
                                 }
+
                                 ?>
                             </tbody>
+
                         </table>
+
                     </div>
                     <h5>Livraison :</h5>
                     <div id="delivery" class="delivery d-flex">
@@ -199,11 +213,25 @@ if (isset($_POST['addaddress'])) {
                 <div class="cart_recap">
                     <h5>Récapitulatif :</h5>
                     <div class="total_product">
-                        <h5>Articles :</h5>
+                        <h5>Articles (<?= $totalQuantity ?>) : <?php
+                                                                echo number_format($totalPanier, 2);
+                                                                ?> €
+                        </h5>
+                        <h5>
+                            <?php
+                            $tva = $totalPanier * 0.20;
+                            $totalPanierAvecTva = $totalPanier + $tva;
+                            ?>
+                            (TVA 20%) : <?= number_format($tva, 2); ?> €<br>
+
                     </div>
                     <hr>
                     <div class="total">
-                        <h5><b>Total :</b></h5>
+                        <h5>
+                            <b>Total :
+                                <?= number_format($totalPanierAvecTva, 2); ?>€
+                            </b>
+                        </h5>
                     </div>
                     <div class="payment"><button class="btn btn-primary" type="submit">Procéder au paiement</button>
                         <p>Paiement en 3x dès 100,

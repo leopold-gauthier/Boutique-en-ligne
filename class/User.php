@@ -26,6 +26,12 @@ class User
     }
 
     // GET
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
     public function getLogin()
     {
         return $this->login;
