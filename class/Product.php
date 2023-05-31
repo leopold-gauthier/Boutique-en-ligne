@@ -8,12 +8,13 @@ class Product
     public $product;
     public $description;
     public $quantity;
+    public $date;
     public $price;
     public $path;
 
     //CONSTRUCTOR
 
-    public function __construct($id, $id_subcategory, $product, $description, $quantity, $price, $path)
+    public function __construct($id, $id_subcategory, $product, $description, $quantity, $price, $date, $path)
     {
         $this->id = $id;
         $this->id_subcategory = $id_subcategory;
@@ -22,6 +23,7 @@ class Product
         $this->quantity = $quantity;
         $this->price = $price;
         $this->path = $path;
+        $this->date = $date;
     }
 
     public function register($bdd)
@@ -31,6 +33,7 @@ class Product
         $name = $this->product;
         $desc = $this->description;
         $quantity = $this->quantity;
+        $date = $this->date;
         $price = $this->price;
 
         // Chemin du dossier de destination
@@ -47,8 +50,8 @@ class Product
 
             // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
 
-            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path` ,`id_subcategory`) VALUES ( ?, ?, ?, ?, ?, ?);");
-            $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $subcategory]);
+            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path` , date_add ,`id_subcategory`) VALUES ( ?, ?, ?, ?, ?,?, ?);");
+            $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $date, $subcategory]);
 
             // Récupérer l'ID du dernier enregistrement inséré
             $lastInsertedId = $bdd->lastInsertId();

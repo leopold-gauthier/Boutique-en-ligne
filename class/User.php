@@ -176,6 +176,16 @@ class User
 
 
     // VERIFY
+    public function verify_confirm()
+    {
+        if ($_POST['password_confirm'] == $_SESSION['user']->password) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function verify_password()
     {
         if ($_POST['password'] == $_POST['password_confirm']) {
@@ -199,6 +209,18 @@ class User
         $login = htmlspecialchars($_POST['login']);
         $recupUser = $bdd->prepare("SELECT * FROM users WHERE login = ?");
         $recupUser->execute([$login]);
+        if ($recupUser->rowCount() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function verify_email($bdd)
+    {
+        $email = htmlspecialchars($_POST['email']);
+        $recupUser = $bdd->prepare("SELECT * FROM users WHERE email = ?");
+        $recupUser->execute([$email]);
         if ($recupUser->rowCount() > 0) {
             return false;
         } else {
@@ -254,9 +276,16 @@ class User
     }
     public function Update($bdd)
     {
-        if ($this->verify_empty($bdd) == true && $this->verify_password($bdd) == true) {
-            $update = $bdd->prepare("UPDATE users SET login = ?, password = ?, email = ?, firstname = ?, lastname = ? WHERE users.id = ? ");
-            $update->execute([$this->login, $this->password, $this->email, $this->firstname, $this->lastname, $this->id]);
+        if ($this->verify_login($bdd) == true && $this->verify_confirm() == true) {
+            $update = $bdd->prepare("UPDATE users SET login = ?, email = ?, firstname = ?, lastname = ? , tel = ? WHERE users.id = ? ");
+            $update->execute([$this->login, $this->email, $this->firstname, $this->lastname, $this->tel, $this->id]);
+            $_SESSION['user']->login = $this->login;
+            $_SESSION['user']->email = $this->email;
+            $_SESSION['user']->tel = $this->tel;
+            $_SESSION['user']->firstname = $this->firstname;
+            $_SESSION['user']->lastname = $this->lastname;
+
+            header("Location: ./edit.php");
         } else {
             return false;
         }

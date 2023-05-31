@@ -202,6 +202,8 @@ if (isset($_POST['deletecat'])) {
                                 <input class="form-control" type="number" step="0.01" id="price" name="price">
                                 <label for="quantity">Quantité :</label>
                                 <input class="form-control" type="number" id="quantity" name="quantity">
+                                <label for="date">Date :</label>
+                                <input class="form-control" type="date" id="date" name="date">
                                 <label for="image">Images :</label>
                                 <input class="form-control" type="file" id="image" name="image">
                                 <button class="form-control bg-secondary" type="submit" id="submit" name="addproduct">Ajouter produit &nbsp;<i class="fa-solid fa-square-plus"></i></button>
@@ -231,7 +233,7 @@ if (isset($_POST['deletecat'])) {
                     </div>
                     <div class="view">
                         <div class="v_product">
-                            <h5>Supprimer un produit :</h5>
+                            <h5 id="delete_part">Supprimer un produit :</h5>
                             <table class="my-table">
                                 <thead>
                                     <tr>
@@ -240,6 +242,7 @@ if (isset($_POST['deletecat'])) {
                                         <th class="table-heading">Sous-Catégorie</th>
                                         <th class="table-heading">Descriptif</th>
                                         <th class="table-heading">Prix</th>
+                                        <th class="table-heading">Date</th>
                                         <th class="table-heading">Quantité</th>
                                         <th class="table-heading">Supprimer</th>
                                     </tr>
@@ -253,6 +256,7 @@ if (isset($_POST['deletecat'])) {
                                             <td><?= $value['name'] ?></td>
                                             <td><?= $value['description'] ?></td>
                                             <td><?= $value['price'] ?></td>
+                                            <td><?= $value['date_add'] ?></td>
                                             <td><?= $value['quantity'] ?></td>
                                             <td>
                                                 <form method="POST">
@@ -264,7 +268,7 @@ if (isset($_POST['deletecat'])) {
                                         if (isset($_POST['deleteprod'])) {
                                             $product = new Product($_POST['deleteprod'], "", "", "", "", "", "", "");
                                             $product->delete($bdd);
-                                            header("Location: ./admin.php");
+                                            header("Location: ./admin.php#delete_part");
                                         }
                                     }
 
@@ -276,6 +280,7 @@ if (isset($_POST['deletecat'])) {
                                             $_POST['description'],
                                             $_POST['quantity'],
                                             $_POST['price'],
+                                            $_POST['date'],
                                             ""
                                         );
                                         $Product->register($bdd);
