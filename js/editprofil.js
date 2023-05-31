@@ -1,14 +1,11 @@
-
-
-
 function validerFormulaire() {
     var login = document.getElementById("login").value;
     var nom = document.getElementById("lastname").value;
     var prenom = document.getElementById("firstname").value;
     var email = document.getElementById("email").value;
     var tel = document.getElementById("tel").value;
-    var mdp = document.getElementById("password").value;
     var mdp_confirm = document.getElementById("password_confirm").value;
+    
     // Coté php
     var erreurMessage = "<?php echo isset($erreur) ? $erreur : ''; ?>";
 
@@ -24,8 +21,7 @@ function validerFormulaire() {
     if (login === "") {
         document.getElementById("erreur").textContent = "Veuillez entrer un login.";
         return false;
-    }
-    else {
+    } else {
         document.getElementById("erreur").textContent = "";
     }
 
@@ -71,13 +67,11 @@ function validerFormulaire() {
         document.getElementById("erreur").textContent = "";
     }
 
+
     if (erreurMessage !== '') {
         document.getElementById('erreur').textContent = erreurMessage;
-        return false; 
-    }else {
-        document.getElementById("erreur").textContent = "";
+        return false; // Bloquer la soumission du formulaire uniquement en cas d'erreur
     }
-
 
     return true;
 }

@@ -4,6 +4,7 @@ include("./class/User.php");
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,6 +40,7 @@ include("./class/User.php");
                     <input class="form-control" type="submit" name="submit" value="Se connecter">
                 </div>
             </form>
+            <a href="inscription.php">S'inscrire !</a>&nbsp;/&nbsp; Mot de passe oublié ?
         </div>
     </main>
 

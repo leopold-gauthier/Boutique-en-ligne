@@ -82,7 +82,13 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
 
                     ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier&#40;<?= $totalQuantity; ?>&#41;</a>
+                            <a class="nav-link" href="./cart.php"><i class="fa-solid fa-cart-shopping" style="color: #000000;"></i>&nbsp;Panier&nbsp;&#40;
+                                <?php if ($totalQuantity == null) {
+                                    echo "0";
+                                } else {
+                                    echo $totalQuantity;
+                                }; ?> &#41;
+                            </a>
                             <div id="nbcart"></div>
                         </li>
 
