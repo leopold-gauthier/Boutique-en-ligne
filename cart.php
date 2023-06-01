@@ -213,9 +213,16 @@ if (isset($_POST['addaddress'])) {
                 <div class="cart_recap">
                     <h5>Récapitulatif :</h5>
                     <div class="total_product">
-                        <h5>Articles (<?= $totalQuantity ?>) : <?php
-                                                                echo number_format($totalPanier, 2);
-                                                                ?> €
+                        <h5>Articles (<?php
+                                        if ($totalQuantity == null) {
+                                            echo "0";
+                                        } else {
+                                            echo $totalQuantity;
+                                        }
+                                        ?>) :
+                            <?php
+                            echo number_format($totalPanier, 2);
+                            ?> €
                         </h5>
                         <h5>
                             <?php

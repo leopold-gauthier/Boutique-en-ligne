@@ -1,9 +1,6 @@
 <?php
+ob_start();
 include_once("./class/User.php");
-if (isset($_POST['submit'])) {
-    $user = new User($_SESSION['user']->id, $_POST['login'], null, $_POST['email'], $_POST['firstname'], $_POST['lastname'], $_POST['tel']);
-    $user->Update($bdd);
-}
 ?>
 
 <!DOCTYPE html>
@@ -46,11 +43,15 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="mb-3">
                         <label for="tel" class="form-label">Téléphone :</label>
-                        <input type="text" id="tel" name="tel" class="form-control" placeholder="<?= $_SESSION['user']->tel; ?>">
+                        <input type="tel" id="tel" name="tel" pattern="[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}" class="form-control" placeholder="<?= $_SESSION['user']->tel; ?>">
+                        <small>Format: 06-45-78-90-15</small>
                     </div>
                     <div class="mb-3">
                         <label for="password_confirm" class="form-label">Confirm password :</label>
-                        <input type="text" id="password_confirm" name="password_confirm" class="form-control" placeholder="">
+                        <input type="password" id="password_confirm" name="password_confirm" class="form-control" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                        <div id="erreur"></div>
                     </div>
                     <div class="mb-3">
                         <label for="password_confirm" class="form-label">Pour enregistrer vos changements veuillez saissir votre mot de passe.</label><br>
@@ -70,3 +71,21 @@ if (isset($_POST['submit'])) {
 </body>
 
 </html>
+<?php
+if (isset($_POST['submit'])) {
+    $user = new User($_SESSION['user']->id, $_POST['login'], null, $_POST['email'], $_POST['firstname'], $_POST['lastname'], $_POST['tel']);
+
+    if ($user->verify_confirm() == true) {
+        $user->Update($bdd);
+        header("Location: ./edit.php");
+        // exit; // Ajoute cette ligne pour terminer l'exécution du script après la redirection
+    } else {
+        echo '
+        <script>
+            document.getElementById("erreur").textContent = "Mot de passe incorrect.";
+        </script>';
+    }
+}
+
+
+?>

@@ -53,9 +53,18 @@ if ($_SESSION != NULL) {
     header("Location: ./profil.php");
 }
 if (isset($_POST['submit'])) {
+    $login = $_POST["login"];
+    $password = $_POST["password"];
 
-    $User = new User("", $_POST["login"], $_POST["password"], "", "", "", "");
-    $User->connect($bdd);
-    header("Location: ./connexion.php");
+    $user = new User("", $login, $password, "", "", "", "");
+
+    if ($user->connect($bdd)) {
+        header("Location: ./connexion.php");
+        exit; // Important pour arrêter l'exécution du script après la redirection
+    } else {
+        echo '
+        <script>
+            document.getElementById("erreur").textContent = "Le login ou le mot de passe incorrect.";
+        </script>';
+    }
 }
-?>
