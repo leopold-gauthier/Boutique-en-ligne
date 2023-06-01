@@ -10,11 +10,10 @@ class Product
     public $quantity;
     public $date;
     public $price;
-    public $path;
-
+    public $marque;
     //CONSTRUCTOR
 
-    public function __construct($id, $id_subcategory, $product, $description, $quantity, $price, $date, $path)
+    public function __construct($id, $id_subcategory, $product, $description, $quantity, $price, $date, $marque)
     {
         $this->id = $id;
         $this->id_subcategory = $id_subcategory;
@@ -22,8 +21,8 @@ class Product
         $this->description = $description;
         $this->quantity = $quantity;
         $this->price = $price;
-        $this->path = $path;
         $this->date = $date;
+        $this->marque = $marque;
     }
 
     public function register($bdd)
@@ -35,67 +34,92 @@ class Product
         $quantity = $this->quantity;
         $date = $this->date;
         $price = $this->price;
+        $marque = $this->marque;
 
         // Chemin du dossier de destination
         $targetDirectory = './product_image/';
 
-        // Nom du fichier
-        $fileName = $_FILES['image']['name'];
-        // Chemin complet du fichier de destination
-        $targetFilePath = $targetDirectory . $fileName;
+        // Tableau pour stocker les nouveaux chemins d'accès des images
+        $imagePaths = [];
 
-        // Déplacer le fichier téléchargé vers le dossier de destination
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
-            // Le fichier a été déplacé avec succès, effectuer l'insertion en base de données
+        // Vérifier si des fichiers ont été téléchargés
+        if (!empty($_FILES['image']['name'])) {
+            // Boucler à travers tous les fichiers téléchargés
+            foreach ($_FILES['image']['name'] as $key => $fileName) {
+                // Chemin complet du fichier de destination
+                $targetFilePath = $targetDirectory . $fileName;
 
-            // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
+                // Générer un nouveau nom de fichier unique
+                $newFileName = uniqid() . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+                $targetFilePath = $targetDirectory . $newFileName;
 
-            $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`,`path` , date_add ,`id_subcategory`) VALUES ( ?, ?, ?, ?, ?,?, ?);");
-            $requete->execute([$name, $desc, $quantity, $price, $targetFilePath, $date, $subcategory]);
-
-            // Récupérer l'ID du dernier enregistrement inséré
-            $lastInsertedId = $bdd->lastInsertId();
-
-            // Nouveau nom de fichier avec l'ID du produit
-            $newFileName = $lastInsertedId . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
-            $newFilePath = $targetDirectory . $newFileName;
-            // Renommer le fichier avec l'ID du produit
-            if (rename($targetFilePath, $newFilePath)) {
-                // Mettre à jour l'enregistrement avec le nouveau chemin de l'image associé
-                $updateRequete = $bdd->prepare("UPDATE `product` SET `path` = ? WHERE `id` = ?");
-                $updateRequete->execute([$newFilePath, $lastInsertedId]);
-
-                // Faites d'autres actions si nécessaire après l'insertion en base de données
-
-            } else {
+                // Déplacer le fichier téléchargé vers le dossier de destination
+                if (move_uploaded_file($_FILES['image']['tmp_name'][$key], $targetFilePath)) {
+                    // Le fichier a été déplacé avec succès, ajouter le chemin d'accès à notre tableau
+                    $imagePaths[] = $targetFilePath;
+                }
             }
-        } else {
         }
+
+        // Connexion à la base de données (supposons que vous avez déjà une connexion à $bdd)
+
+        $requete = $bdd->prepare("INSERT INTO `product` (`product`, `description`, `quantity`, `price`, date_add, `id_subcategory`, marque) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        $requete->execute([$name, $desc, $quantity, $price, $date, $subcategory, $marque]);
+
+        // Récupérer l'ID du dernier enregistrement inséré
+        $lastInsertedId = $bdd->lastInsertId();
+
+        // Insérer les chemins d'accès des images dans la table product_image_path
+        if (!empty($imagePaths)) {
+            $imageInsertQuery = "INSERT INTO `product_image_path` (`id_product`, `path`) VALUES ";
+            $imageValues = [];
+
+            foreach ($imagePaths as $path) {
+                $imageInsertQuery .= "(?, ?),";
+                $imageValues[] = $lastInsertedId;
+                $imageValues[] = $path;
+            }
+
+            $imageInsertQuery = rtrim($imageInsertQuery, ',');
+            $imageInsertStmt = $bdd->prepare($imageInsertQuery);
+            $imageInsertStmt->execute($imageValues);
+        }
+
+        // Faites d'autres actions si nécessaire après l'insertion en base de données
     }
+
+
+
 
     public function delete($bdd)
     {
-        // Récupérer le chemin de l'image associée au produit
-        $requete = $bdd->prepare("SELECT `path` FROM product WHERE `id` = ?");
-        $requete->execute([$this->id]);
-        $row = $requete->fetch();
-        $imagePath = $row['path'];
+        // Récupérer les chemins des images associées au produit
+        $imagePathsQuery = $bdd->prepare("SELECT `path` FROM product_image_path WHERE `id_product` = ?");
+        $imagePathsQuery->execute([$this->id]);
+        $imagePaths = $imagePathsQuery->fetchAll(PDO::FETCH_COLUMN);
 
         // Supprimer le produit dans la base de données
-        $delete = $bdd->prepare("DELETE FROM product WHERE `id` = ?");
-        $delete->execute([$this->id]);
+        $deleteProductQuery = $bdd->prepare("DELETE FROM product WHERE `id` = ?");
+        $deleteProductQuery->execute([$this->id]);
+        // Supprimer les enregistrements de la table product_image_path
+        $deleteImagePathQuery = $bdd->prepare("DELETE FROM product_image_path WHERE `id_product` = ?");
+        $deleteImagePathQuery->execute([$this->id]);
 
-        // Supprimer l'image du dossier si elle existe
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
+
+        // Supprimer les images du dossier si elles existent
+        foreach ($imagePaths as $imagePath) {
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
     }
+
 
 
     public function update($bdd)
     {
         $update = $bdd->prepare("UPDATE product SET product = ? , quantity = ? , price = ? , gender = ? , type = ? , path = ? WHERE product.id = ?");
-        $update->execute([$this->product, $this->quantity, $this->price, $this->path, $this->id]);
+        $update->execute([$this->product, $this->quantity, $this->price, $this->id]);
     }
 }
 
