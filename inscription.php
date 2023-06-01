@@ -3,8 +3,6 @@ ob_start();
 include("./class/User.php");
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,14 +22,14 @@ include("./class/User.php");
     </header>
     <main>
         <div class="container">
-            <form id="inscription_form" action="" method="post" onsubmit="return validerFormulaire()">
+            <form action="" method="post" onsubmit="return validerFormulaire()">
                 <div class="mb-3">
                     <div id="erreur_login"></div><br>
                     <div class="d-flex" id="suggestion_login"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="name">Login: </label>
-                    <input class="form-control" type="text" name="login" id="login" value="">
+                    <input class="form-control" type="text" name="login" id="login">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="email">Email: </label>
@@ -81,8 +79,14 @@ include("./class/User.php");
 <?php
 
 if (isset($_POST['submit'])) {
-    $user = new User(NULL, htmlspecialchars($_POST["login"]), htmlspecialchars($_POST["password"]), htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["firstname"]), htmlspecialchars($_POST["lastname"]), htmlspecialchars($_POST["tel"]));
+    $login = htmlspecialchars($_POST["login"]);
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT); // Hashage du mot de passe
+    $email = htmlspecialchars($_POST["email"]);
+    $firstname = htmlspecialchars($_POST["firstname"]);
+    $lastname = htmlspecialchars($_POST["lastname"]);
+    $tel = htmlspecialchars($_POST["tel"]);
 
+    $user = new User(NULL, $login, $password, $email, $firstname, $lastname, $tel);
 
     if ($user->verify_login($bdd) == false) { ?>
         <script>
@@ -131,7 +135,7 @@ if (isset($_POST['submit'])) {
 <?php
     } else {
         $user->register($bdd);
-        header('Location: ./welcome.php');
+        header('Location: ./index.php');
         exit();
     }
 }

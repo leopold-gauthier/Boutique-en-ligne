@@ -1,6 +1,3 @@
-
-
-
 function validerFormulaire() {
     var login = document.getElementById("login").value;
     var nom = document.getElementById("lastname").value;
@@ -9,9 +6,6 @@ function validerFormulaire() {
     var tel = document.getElementById("tel").value;
     var mdp = document.getElementById("password").value;
     var mdp_confirm = document.getElementById("password_confirm").value;
-    // Coté php
-    var erreurMessage = "<?php echo isset($erreur) ? $erreur : ''; ?>";
-
 
     // Vérification du nom et du prénom
     if (nom === "") {
@@ -70,14 +64,6 @@ function validerFormulaire() {
     } else {
         document.getElementById("erreur").textContent = "";
     }
-
-    if (erreurMessage !== '') {
-        document.getElementById('erreur').textContent = erreurMessage;
-        return false; 
-    }else {
-        document.getElementById("erreur").textContent = "";
-    }
-
 
     return true;
 }

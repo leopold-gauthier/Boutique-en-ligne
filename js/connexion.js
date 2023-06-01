@@ -13,9 +13,6 @@ function validerFormulaire() {
     if (mdp === "") {
         document.getElementById("erreur").textContent = "Veuillez entrer un mot de passe";
         return false;
-    } else if (/^[a-zA-Z0-9]+$/.test(mdp)) {
-        document.getElementById("erreur").textContent = "Le mot de passe ou le login est invalide.";
-        return false;
     } else {
         document.getElementById("erreur").textContent = "";
     }

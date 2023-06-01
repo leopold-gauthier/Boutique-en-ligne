@@ -178,12 +178,12 @@ class User
     // VERIFY
     public function verify_confirm()
     {
-        if ($_POST['password_confirm'] == $_SESSION['user']->password) {
-            return true;
-        } else {
-            return false;
-        }
+        $passwordConfirm = $_POST['password_confirm'];
+        $hashedPassword = $_SESSION['user']->password;
+
+        return password_verify($passwordConfirm, $hashedPassword);
     }
+
 
 
     public function verify_password()
@@ -236,6 +236,7 @@ class User
         if ($this->verify_login($bdd) == true && $this->verify_empty() == true && $this->verify_password() == true) {
             $register = $bdd->prepare("INSERT INTO `users` (`login` , `password`, `email` , `firstname` , `lastname`, `tel`) VALUES (?, ? , ?, ? ,?, ?);");
             $register->execute([$this->login, $this->password, $this->email, $this->firstname, $this->lastname, $this->tel]);
+            return true;
         } else {
             return false;
         }
@@ -243,10 +244,11 @@ class User
 
     public function connect($bdd)
     {
-        $connect = $bdd->prepare("SELECT * FROM users WHERE login = ? AND password = ? ");
-        $connect->execute([$this->login, $this->password]);
+        $connect = $bdd->prepare("SELECT * FROM users WHERE login = ?");
+        $connect->execute([$this->login]);
         $result = $connect->fetch(PDO::FETCH_ASSOC);
-        if ($result != false) {
+
+        if ($result !== false && password_verify($this->password, $result['password'])) {
             $this->id = $result['id'];
             $this->login = $result['login'];
             $this->password = $result['password'];
@@ -254,14 +256,17 @@ class User
             $this->firstname = $result['firstname'];
             $this->lastname = $result['lastname'];
             $this->tel = $result['tel'];
+
             $_SESSION['user'] = $this;
+            return true;
+        } else {
+            return false;
         }
     }
 
     public function disconnect()
     {
         unset($_SESSION['user']);
-        var_dump($_SESSION);
     }
 
     public function isConnected()
@@ -277,17 +282,58 @@ class User
     public function Update($bdd)
     {
         if ($this->verify_login($bdd) == true && $this->verify_confirm() == true) {
-            $update = $bdd->prepare("UPDATE users SET login = ?, email = ?, firstname = ?, lastname = ? , tel = ? WHERE users.id = ? ");
-            $update->execute([$this->login, $this->email, $this->firstname, $this->lastname, $this->tel, $this->id]);
-            $_SESSION['user']->login = $this->login;
-            $_SESSION['user']->email = $this->email;
-            $_SESSION['user']->tel = $this->tel;
-            $_SESSION['user']->firstname = $this->firstname;
-            $_SESSION['user']->lastname = $this->lastname;
+            $updateQuery = "UPDATE users SET";
+            $params = array();
 
-            header("Location: ./edit.php");
+            if (!empty($this->login)) {
+                $updateQuery .= " login = ?,";
+                $params[] = $this->login;
+                $_SESSION['user']->login = $this->login;
+            }
+
+            if (!empty($this->email)) {
+                $updateQuery .= " email = ?,";
+                $params[] = $this->email;
+                $_SESSION['user']->email = $this->email;
+            }
+
+            if (!empty($this->firstname)) {
+                $updateQuery .= " firstname = ?,";
+                $params[] = $this->firstname;
+                $_SESSION['user']->firstname = $this->firstname;
+            }
+
+            if (!empty($this->lastname)) {
+                $updateQuery .= " lastname = ?,";
+                $params[] = $this->lastname;
+                $_SESSION['user']->lastname = $this->lastname;
+            }
+
+            if (!empty($this->tel)) {
+                $updateQuery .= " tel = ?,";
+                $params[] = $this->tel;
+                $_SESSION['user']->tel = $this->tel;
+            }
+
+            // Vérifier s'il y a des champs à mettre à jour
+            if (!empty($params)) {
+                // Supprimer la virgule finale
+                $updateQuery = rtrim($updateQuery, ",");
+
+                // Ajouter la clause WHERE
+                $updateQuery .= " WHERE users.id = ?";
+
+                // Ajouter l'ID à la liste des paramètres
+                $params[] = $this->id;
+
+                // Préparer et exécuter la requête
+                $update = $bdd->prepare($updateQuery);
+                $update->execute($params);
+                return true;
+            }
         } else {
             return false;
         }
+        return false;
     }
 }
