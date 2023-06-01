@@ -196,6 +196,8 @@ if (isset($_POST['deletecat'])) {
                                 </select>
                                 <label for="name">Nom :</label>
                                 <input class="form-control" type="text" id="name" name="name">
+                                <label for="marque">Marque :</label>
+                                <input class="form-control" type="text" id="marque" name="marque">
                                 <label for="description">Description :</label>
                                 <textarea class="form-control" id="desc" name="description"></textarea>
                                 <label for="price">Prix :</label>
@@ -205,7 +207,7 @@ if (isset($_POST['deletecat'])) {
                                 <label for="date">Date :</label>
                                 <input class="form-control" type="date" id="date" name="date">
                                 <label for="image">Images :</label>
-                                <input class="form-control" type="file" id="image" name="image">
+                                <input class="form-control" multiple type="file" id="image" name="image[]">
                                 <button class="form-control bg-secondary" type="submit" id="submit" name="addproduct">Ajouter produit &nbsp;<i class="fa-solid fa-square-plus"></i></button>
                                 <a href="./admin.php">Annulé</a>
                             </form>
@@ -239,6 +241,7 @@ if (isset($_POST['deletecat'])) {
                                     <tr>
                                         <th class="table-heading">ID</th>
                                         <th class="table-heading">Nom</th>
+                                        <th class="table-heading">Marque</th>
                                         <th class="table-heading">Sous-Catégorie</th>
                                         <th class="table-heading">Descriptif</th>
                                         <th class="table-heading">Prix</th>
@@ -253,6 +256,7 @@ if (isset($_POST['deletecat'])) {
                                         <tr>
                                             <td><?= $value['id'] ?></td>
                                             <td><?= $value['product'] ?></td>
+                                            <td><?= $value['marque'] ?></td>
                                             <td><?= $value['name'] ?></td>
                                             <td><?= $value['description'] ?></td>
                                             <td><?= $value['price'] ?></td>
@@ -281,11 +285,13 @@ if (isset($_POST['deletecat'])) {
                                             $_POST['quantity'],
                                             $_POST['price'],
                                             $_POST['date'],
-                                            ""
+                                            $_POST['marque']
                                         );
                                         $Product->register($bdd);
+
                                         header("Location: ./admin.php");
                                     }
+
                                     ?>
                                 </tbody>
                             </table>

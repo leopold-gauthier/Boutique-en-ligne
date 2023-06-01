@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once("./class/User.php");
 // Vérifiez si l'utilisateur est connecté et que ses informations sont présentes dans $_SESSION
 if (isset($_SESSION['user'])) {

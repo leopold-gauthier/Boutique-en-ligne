@@ -6,9 +6,14 @@ if (isset($_SESSION['user'])) {
     $user = new User($_SESSION['user']->id, $_SESSION['user']->login, "", $_SESSION['user']->email, $_SESSION['user']->firstname, $_SESSION['user']->lastname, $_SESSION['user']->tel);
 
     // si la session est active et que l'user est instancier alors place au produit
-    $cartInfo = $bdd->prepare("SELECT  * , cart.quantity as cart_quantity, cart.id as id_cart FROM cart 
+    $cartInfo = $bdd->prepare("SELECT  * , cart.quantity as cart_quantity, cart.id as id_cart , product_image_path.path FROM cart 
     INNER JOIN product ON cart.id_product = product.id 
-    WHERE cart.id_user = ?");
+    INNER JOIN (
+            SELECT id_product, path
+            FROM product_image_path
+            GROUP BY id_product
+        ) AS product_image_path ON product.id = product_image_path.id_product 
+        WHERE cart.id_user = ?");
     $cartInfo->execute([$_SESSION['user']->id]);
     $resultsCart = $cartInfo->fetchAll(PDO::FETCH_ASSOC);
 } else {
@@ -16,6 +21,7 @@ if (isset($_SESSION['user'])) {
     // Gérer cette situation en conséquence (redirection, affichage d'un message d'erreur, etc.)
     header("Location: ./index.php");
 }
+
 if (isset($_POST['deletecart'])) {
     $cartdelete = $bdd->prepare("DELETE FROM `cart` WHERE `cart`.`id` = ?;");
     $cartdelete->execute([$_POST['deletecart']]);
@@ -83,7 +89,7 @@ if (isset($_POST['addaddress'])) {
                                     <tr>
                                         <td><img height="100px" src="<?= $value['path'] ?>" /></td>
                                         <td><?= $value['product'] ?></td>
-                                        <td><?= $value['description'] ?></td>
+                                        <td><?= $value['marque'] ?></td>
                                         <td><?= $value['cart_quantity'] ?></td>
                                         <td><?= $value['price'] * $value['cart_quantity'] ?>€</td>
                                         <td>
