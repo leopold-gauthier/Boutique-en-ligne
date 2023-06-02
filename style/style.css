@@ -149,7 +149,7 @@ h5{
     flex-direction: column;
 }
 
-#firstpart{
+#details #firstpart{
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -240,4 +240,56 @@ h5{
 .modal-image {
     overflow: hidden;
     max-width: 100%;
+}
+
+/* index */
+#best_sale{
+    display: flex;
+    flex-direction: row;
+}
+
+
+#new_product{
+    display: flex;
+    flex-direction: row;
+}
+
+#best_sale #image{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#new_product #image{
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#best_sale img{
+    height: 300px;
+
+}
+
+#new_product img{
+    height: 300px;
+}
+
+#new_product #description{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+#best_sale #description{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
 }
