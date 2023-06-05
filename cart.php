@@ -246,7 +246,7 @@ if (isset($_POST['addaddress'])) {
                             </b>
                         </h5>
                     </div>
-                    <div class="payment"><button class="btn btn-primary" type="submit">Procéder au paiement</button>
+                    <div id="bouton-payment" class="payment"><a href="order.php"><button class="btn btn-primary" type="button">Procéder au paiement</button></a>
                         <p>Paiement en 3x dès 100,
                             00€ d'achat</p>
                         <p>(souscription légale avec paiement légitime)</p>
