@@ -70,7 +70,7 @@ hr{
 }
 
 .container-fluid ul li:hover{
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(184, 184, 184, 0.085);
     border-radius: 10%;
 }
 a{
