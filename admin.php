@@ -92,10 +92,8 @@ if (isset($_POST['deletecat'])) {
                             <h5>Homme</h5>
                             <?php foreach ($resultman as $result => $value) {
                             ?>
-                                <div class="btn btn-secondary"><?= $value["name"]; ?>
-                                    <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                <div class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
+                                    <?= $value["name"]; ?>&nbsp;<i class="fa-solid fa-trash"></i>
                                 </div>
                                 <!-- Modal -->
                                 <div class="modal fade" id="modalsecurity<?= $value['id'] ?>">
@@ -123,17 +121,13 @@ if (isset($_POST['deletecat'])) {
                         </div>
                         <div id="v_woman">
                             <h5>Femme</h5>
-                            <?php foreach ($resultwoman as $result => $value) {
-                            ?>
-
-                                <div class="btn btn-secondary"><?= $value["name"]; ?>
-                                    <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                            <?php foreach ($resultwoman as $result => $value) { ?>
+                                <div class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" type="button">
+                                    <?= $value["name"]; ?>&nbsp;<i class="fa-solid fa-trash"></i>
                                 </div>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="modalsecurity<?= $value['id'] ?>">
+                                <div class="modal fade "  id="modalsecurity<?= $value['id'] ?>">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -263,19 +257,40 @@ if (isset($_POST['deletecat'])) {
                                             <td><?= $value['date_add'] ?></td>
                                             <td><?= $value['quantity'] ?></td>
                                             <td>
-                                                <form method="POST">
-                                                    <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod"><i class="fa-solid fa-trash"></i></button>
-                                                </form>
+                                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" class="btn btn-secondary" value="<?= $value['id'] ?>"><i class="fa-solid fa-trash"></i></button>
                                             </td>
                                         </tr>
-                                    <?php
+
+
+                                        <div class="modal fade" id="modalsecurity<?= $value['id'] ?>">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="myModalLabel">Êtes-vous sur !</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Ajoutez ici les éléments de votre formulaire de filtrage  -->
+                                                        <p>Voulez vous vraiment supprimer ce produit ?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form method="post">
+                                                            <button class="btn btn-secondary" type="submit" value="<?= $value['id'] ?>" name="deleteprod" data-bs-dismiss="modal">Confirmer</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
                                         if (isset($_POST['deleteprod'])) {
                                             $product = new Product($_POST['deleteprod'], "", "", "", "", "", "", "");
                                             $product->delete($bdd);
                                             header("Location: ./admin.php#delete_part");
                                         }
+                                        ?>
+                                    <?php
                                     }
-
+                                    // fin du foreach
                                     if (isset($_POST['addproduct'])) {
                                         $Product = new Product(
                                             NULL,
@@ -291,7 +306,6 @@ if (isset($_POST['deletecat'])) {
 
                                         header("Location: ./admin.php");
                                     }
-
                                     ?>
                                 </tbody>
                             </table>
