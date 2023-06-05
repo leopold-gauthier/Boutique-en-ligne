@@ -70,7 +70,7 @@ hr{
 }
 
 .container-fluid ul li:hover{
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(184, 184, 184, 0.085);
     border-radius: 10%;
 }
 a{
@@ -106,6 +106,13 @@ a{
 }
 #container{
     margin-left: 20px;
+}
+.card-body h5{
+    color: black;
+}
+.card:hover{
+    border: solid 1px;
+    border-color: rgb(173, 166, 166);
 }
 
 
@@ -167,6 +174,12 @@ h5{
 
 .image{
     width: 100px;
+    margin-right: 2px;
+    box-shadow: inset 0 0 1em rgb(255, 255, 255), 0 0 2em rgb(179, 176, 176);
+}
+.image:hover{
+    border: solid 1px;
+    border-color: rgb(135, 141, 141);
 }
 
 #description{
@@ -208,6 +221,17 @@ h5{
     width: 50%;
 }
 
+#secondpart {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    #more {
+    flex-direction: column;
+    }
+}
+
 /* MODAL DETAILS */
 
 .modal {
@@ -216,6 +240,7 @@ h5{
     z-index: 9999;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.8);
+    
     
 }
 
@@ -229,12 +254,13 @@ h5{
     overflow: hidden;
     width: 75%;
     padding: 20px;
+    margin: auto;
 }
 
 .modal-body {
     overflow: hidden;
     text-align: center;
-    width: 100%;
+    width: 100%;  
 }
 
 .modal-image {

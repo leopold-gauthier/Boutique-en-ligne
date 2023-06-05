@@ -103,7 +103,7 @@ if (isset($_POST['addcart'])) {
                     </div>
                 </div>
                 <div id="secondpart">
-                    <div id="more">
+                    <div id="more" >
                         <div id="infos">
                             <table class="my-table">
                                 <thead>
@@ -167,5 +167,6 @@ if (isset($_POST['addcart'])) {
         });
     </script>
 </body>
-
+<!-- class="d-flex flex-column flex-md-row flex-wrap" -->
 </html>
+
