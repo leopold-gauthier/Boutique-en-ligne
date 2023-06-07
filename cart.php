@@ -34,6 +34,9 @@ if (isset($_POST['deleteaddress'])) {
 if (isset($_POST['addaddress'])) {
     $user->registerAddress($bdd);
 }
+
+$orderpayed = false;
+
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +51,7 @@ if (isset($_POST['addaddress'])) {
     include_once('./include/head_inc.php');
     ?>
     <link rel="stylesheet" href="./style/style.css">
+
     <title>Panier</title>
 </head>
 
@@ -74,6 +78,7 @@ if (isset($_POST['addaddress'])) {
                                     <td></td>
                                     <td>Quantité</td>
                                     <td>Prix(€)</td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,7 +91,7 @@ if (isset($_POST['addaddress'])) {
                                     $montant = $quantite * $prix;
                                     $totalPanier += $montant;
                                 ?>
-                                    <tr>
+                                    <tr class="liste">
                                         <td><img height="100px" src="<?= $value['path'] ?>" /></td>
                                         <td><?= $value['product'] ?></td>
                                         <td><?= $value['marque'] ?></td>
@@ -125,7 +130,6 @@ if (isset($_POST['addaddress'])) {
                                         <div class="mb-3">
                                             <label class="form-label" for="address">Adresse : </label>
                                             <input class="form-input" id="address" type="text" value="<?= $resultPR['street'] ?> <?= $resultPR['postal_code'] ?>" disabled />
-
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label" for="city">Ville : </label><br>
@@ -246,7 +250,9 @@ if (isset($_POST['addaddress'])) {
                             </b>
                         </h5>
                     </div>
-                    <div id="bouton-payment" class="payment"><a href="order.php"><button class="btn btn-primary" type="button">Procéder au paiement</button></a>
+                    <div class="payment">
+                        <div id="paypal-boutons">
+                        </div>
                         <p>Paiement en 3x dès 100,
                             00€ d'achat</p>
                         <p>(souscription légale avec paiement légitime)</p>
@@ -256,6 +262,84 @@ if (isset($_POST['addaddress'])) {
         </div>
     </main>
     <footer><?php include_once('./include/footer_inc.php') ?></footer>
+    <script src="https://www.paypal.com/sdk/js?client-id=ATmGe5jbhPDfZtqeNcPZw_gcJU1YELNoRjhJFwkD_ixpd3yXgr-vYRmG6UrQFXonZ0BTvvcLdGd32Md_&currency=USD"></script>
+    <script>
+        let rows = document.querySelectorAll(".liste");
+        let totalprice = <?= $totalPanierAvecTva; ?>;
+
+        let elements = []; // Déplacer la déclaration de la variable à l'extérieur de la boucle for
+
+        for (let i = 0; i < rows.length; i++) {
+            let name = rows[i].querySelector("td:nth-child(2)").innerHTML;
+            console.log(name);
+            let marque = rows[i].querySelector("td:nth-of-type(3)").innerHTML;
+            // console.log(marque);
+            let quantity = rows[i].querySelector("td:nth-of-type(4)").innerHTML;
+            // console.log(quantity);
+
+            let element = {
+                name: name,
+                description: marque,
+                quantity: parseInt(quantity),
+                unit_amount: {
+                    value: 1,
+                    currency_code: "$"
+                }
+            };
+
+            elements.push(element);
+
+        }
+        console.log(elements);
+        paypal.Buttons({
+
+            // Configurer la transaction
+            createOrder: function(data, actions) {
+
+                // let produits = elements;
+                // console.log(produits);
+                // Les produits à payer avec leurs details
+                var produits = [{
+                    name: "Produit 1",
+                    description: "Description du produit 1",
+                    quantity: 1,
+                    unit_amount: {
+                        value: 1,
+                        currency_code: "USD"
+                    }
+                }];
+                console.log(produits);
+
+                // Le total des produits
+                var total_amount = produits.reduce(function(total, product) {
+                    return total + product.unit_amount.value * product.quantity;
+                }, 0);
+
+                // La transaction
+                return actions.order.create({
+                    purchase_units: [{
+                        items: produits,
+                        amount: {
+                            value: total_amount,
+                            currency_code: "USD",
+                            breakdown: {
+                                item_total: {
+                                    value: total_amount,
+                                    currency_code: "USD"
+                                }
+                            }
+                        }
+                    }]
+                })
+            },
+            onApprove(data) {
+                console.log("payer");
+                <?php
+                $orderpayed = true;
+                ?>
+            }
+        }).render("#paypal-boutons");
+    </script>
 </body>
 
 </html>
