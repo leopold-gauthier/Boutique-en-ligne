@@ -130,7 +130,7 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($resultproduct as $result => $value) { ?>
                             <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
                                 <div class="card">
-                                    <div style='height:300px; background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
+                                    <div style='height:300px; width:200px; background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title"><?= $value['product'] ?></h5>
@@ -196,7 +196,7 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($resultproduct as $result => $value) { ?>
                             <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
                                 <div class="card">
-                                    <div style='height:300px;  background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
+                                    <div style='height:300px; width:200px; background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title"><?= $value['product'] ?></h5>

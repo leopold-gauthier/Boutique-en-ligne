@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
     $user = new User("", $login, $password, "", "", "", "");
 
     if ($user->connect($bdd)) {
-        header("Location: ./connexion.php");
+        header("Location: ./index.php");
         exit; // Important pour arrêter l'exécution du script après la redirection
     } else {
         echo '
