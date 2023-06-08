@@ -42,7 +42,7 @@ if (isset($_GET['cat'])) {
 
 
 // Ajouter dans le panier
-if (isset($_POST['addcart'])) {
+if (isset($_POST['addcart']) && !empty($_SESSION)) {
     $redirection = $_GET['type'];
     $produit = htmlspecialchars($_POST['addcart']);
     $user = $_SESSION['user']->id;
@@ -133,19 +133,13 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
                                 <li class="list-group-item">Stock /
                                     <?= $value['quantity'] ?></li>
                                 <li class="list-group-item">
-                                    <?php
-                                    if (!empty($_SESSION)) {
-                                    ?>
-                                        <form method="post">
-                                            <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                                        </form>
-                                    <?php
-                                    } else { ?>
-                                        <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
-                                    <?php }
-                                    ?>
+                                    <form method="post">
+                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
+                                    </form>
+                                    <?php if (isset($_POST['addcart']) && empty($_SESSION)) {
+                                        header("Location: ./connexion.php");
+                                    } ?>
                                 </li>
-
                             </ul>
 
 
