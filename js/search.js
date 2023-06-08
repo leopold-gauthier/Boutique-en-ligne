@@ -37,18 +37,18 @@ function autocomplete(input, data) {
 
       // Effacer la liste des suggestions précédentes
       suggestionList.innerHTML = '';
-      console.log(suggestions);
+
       // Vérifier si des suggestions existent
       if (suggestions.length > 0) {
           // Ajouter les nouvelles suggestions à la liste
           suggestions.forEach(function(suggestion) {
               // Créer un élément de liste pour chaque suggestion
-              var cheminImage = suggestion.path;
-                var indexDernierPoint = cheminImage.indexOf(".");
-                var nouveauCheminImage = cheminImage.slice(0, indexDernierPoint) + "./" + cheminImage.slice(indexDernierPoint);
+              let cheminImage = suggestion.path;
+                let indexDernierPoint = cheminImage.indexOf(".");
+                let nouveauCheminImage = cheminImage.slice(0, indexDernierPoint) + "./" + cheminImage.slice(indexDernierPoint);
 
               let listItem = document.createElement('div');
-              listItem.innerHTML = '<a href="details.php?product=' + suggestion.id + '" class=" text-black"><img height="50px" src="' + nouveauCheminImage + '"/>&nbsp;' + suggestion.product + '</a>';
+              listItem.innerHTML = '<a href="details.php?id=' + suggestion.id + '" class=" text-black"><img height="50px" src="' + nouveauCheminImage + '"/>&nbsp;' + suggestion.product + '</a>';
 
               suggestionList.appendChild(listItem);
               // Ajouter un gestionnaire d'événements pour remplir la barre de recherche avec la suggestion sélectionnée

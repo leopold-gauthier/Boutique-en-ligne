@@ -95,10 +95,10 @@ a{
 /*//////////////////////boutique//////////////*/
 
 
-/* .produit{
-    display: flex !important;
-    flex-direction: row !important;
-} */
+.card{
+    height: auto !important;
+    width: auto !important;
+}
 
 #filter{
     float: right;

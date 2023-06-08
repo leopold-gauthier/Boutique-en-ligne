@@ -4,7 +4,13 @@ include_once('./include/bdd.php');
 
 try {
     // Requête pour récupérer toutes les informations de la table "product"
-    $sql = "SELECT * FROM product";
+    $sql = "SELECT *
+    FROM product
+    INNER JOIN (
+            SELECT id_product, path
+            FROM product_image_path
+            GROUP BY id_product
+        ) AS product_image_path ON product.id = product_image_path.id_product;";
     $stmt = $bdd->prepare($sql);
     $stmt->execute();
 

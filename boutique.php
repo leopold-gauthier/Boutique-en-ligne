@@ -122,7 +122,7 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
                 <?php
                 foreach ($resultproduct as $result => $value) { ?>
                     <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                        <div class="card" style="height:100vh;width:14vw;">
+                        <div class="card">
                             <img src="<?= $value['path'] ?>" alt="">
                             <div class="card-body">
                                 <h5 class="card-title"><?= $value['product'] ?></h5>

@@ -91,8 +91,9 @@ $orderpayed = false;
                                     $montant = $quantite * $prix;
                                     $totalPanier += $montant;
                                 ?>
+
                                     <tr class="liste">
-                                        <td><img height="100px" src="<?= $value['path'] ?>" /></td>
+                                        <td><a href="./details.php?id=<?= $value['id'] ?>"><img height="100px" src="<?= $value['path'] ?>" /></a></td>
                                         <td><?= $value['product'] ?></td>
                                         <td><?= $value['marque'] ?></td>
                                         <td><?= $value['cart_quantity'] ?></td>
@@ -103,6 +104,7 @@ $orderpayed = false;
                                             </form>
                                         </td>
                                     </tr>
+
                                 <?php
                                 }
 
