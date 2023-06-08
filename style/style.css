@@ -95,6 +95,11 @@ a{
 /*//////////////////////boutique//////////////*/
 
 
+/* .produit{
+    display: flex !important;
+    flex-direction: row !important;
+} */
+
 #filter{
     float: right;
 }

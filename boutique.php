@@ -129,9 +129,8 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
                         <?php
                         foreach ($resultproduct as $result => $value) { ?>
                             <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                                <div class="card">
-                                    <div style='height:300px; width:200px; background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
-                                    </div>
+                                <div class="card" style="height:80vh;width:14vw;">
+                                    <img src="<?= $value['path'] ?>" alt="">
                                     <div class="card-body">
                                         <h5 class="card-title"><?= $value['product'] ?></h5>
                                     </div>
@@ -191,47 +190,47 @@ $resultwoman = $woman->fetchAll(PDO::FETCH_ASSOC);
 
 
                     </div>
-                    <div class="d-flex">
+                    <div class="produit d-inline-flex">
                         <?php
                         foreach ($resultproduct as $result => $value) { ?>
                             <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                                <div class="card">
-                                    <div style='height:300px; width:200px; background-size: cover; background-repeat:no-repeat; background-image:url("<?= $value['path'] ?>")'>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= $value['product'] ?></h5>
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Prix :&nbsp;
-                                            <?= $value['price'] ?>€</li>
-                                        <li class="list-group-item">Stock /&nbsp;
-                                            <?= $value['quantity'] ?></li>
-                                    </ul>
-                                    <div class="card-body">
-                                        <?php
-                                        if (!empty($_SESSION)) {
-                                        ?>
-                                            <form method="post">
-                                                <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                                            </form>
-                                        <?php
-                                        } else { ?>
-                                            <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
-                                        <?php }
-                                        ?>
-                                    </div>
+                                <div class="card" style="height:80vh;width:14vw;">
+                                    <img src="<?= $value['path'] ?>" alt="">
                                 </div>
-                            </a>
-                        <?php
-                        } ?>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= $value['product'] ?></h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Prix :&nbsp;
+                                        <?= $value['price'] ?>€</li>
+                                    <li class="list-group-item">Stock /&nbsp;
+                                        <?= $value['quantity'] ?></li>
+                                </ul>
+                                <div class="card-body">
+                                    <?php
+                                    if (!empty($_SESSION)) {
+                                    ?>
+                                        <form method="post">
+                                            <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
+                                        </form>
+                                    <?php
+                                    } else { ?>
+                                        <a href="./connexion.php"><button class="btn bg-secondary" type="button"><i class="fa-solid fa-square-arrow-up-right"></i> Login</button></a>
+                                    <?php }
+                                    ?>
+                                </div>
                     </div>
-
+                    </a>
+                <?php
+                        } ?>
                 </div>
-            <?php
+
+        </div>
+    <?php
             } else if (isset($_GET[''])) {
                 header("Location: ./index.php");
             } ?>
-        </div>
+    </div>
     </main>
     <footer>
         <?php include_once('./include/footer_inc.php') ?>
