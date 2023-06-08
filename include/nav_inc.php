@@ -70,7 +70,7 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                         <a class="nav-link" href="./deconnexion.php"><i class="fa-solid fa-right-from-bracket fa-rotate-180" style="color: #000000;"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./profil.php"><i class="fa-solid fa-user" style="color: #000000;"></i> &nbsp;Compte</a>
+                        <a class="nav-link" href="./profil.php"><i class="fa-solid fa-user" style="color: #000000;"></i> &nbsp;<?= $_SESSION['user']->firstname ?></a>
                     </li>
                     <?php
                     if (!empty($_SESSION)) {
@@ -95,7 +95,6 @@ $resultcategory = $category->fetchAll(PDO::FETCH_ASSOC);
                     <?php
                     }
                     ?>
-
                 <?php
                 }
                 ?>
