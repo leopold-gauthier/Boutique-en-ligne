@@ -94,23 +94,18 @@ a{
 
 /*//////////////////////boutique//////////////*/
 
+#boutique{
+width: 20% !important;
 
-/* .produit{
-    display: flex !important;
-    flex-direction: row !important;
-} */
-
+}
 #filter{
     float: right;
 }
 #man{
     padding-bottom: 10px;
 }
-#woman{
-    padding-bottom: 10px;
-}
 #container{
-    margin-left: 20px;
+    margin: 0% 2% 0% 2%;
 }
 .card-body h5{
     color: black;

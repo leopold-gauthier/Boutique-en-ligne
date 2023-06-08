@@ -118,36 +118,39 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
                 include_once('./include/filter_modal-inc.php');
                 ?>
             </div>
-            <div class="produit d-inline-flex">
-                <?php
-                foreach ($resultproduct as $result => $value) { ?>
-                    <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                        <div class="card" style="height:100vh;width:14vw;">
-                            <img src="<?= $value['path'] ?>" alt="">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $value['product'] ?></h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Prix :&nbsp;
-                                    <?= $value['price'] ?>€</li>
-                                <li class="list-group-item">Stock /
-                                    <?= $value['quantity'] ?></li>
-                                <li class="list-group-item">
-                                    <form method="post">
-                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                                    </form>
-                                    <?php if (isset($_POST['addcart']) && empty($_SESSION)) {
-                                        header("Location: ./connexion.php");
-                                    } ?>
-                                </li>
-                            </ul>
+            <div class="produit row">
+    <?php
+    foreach ($resultproduct as $result => $value) { ?>
+        <div id="boutique" class="col-sm-6 col-md-4 col-lg-3">
+            <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
+                <div class="card">
+                    <img style="width:100%;height:100%" src="<?= $value['path'] ?>" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $value['product'] ?></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Prix :&nbsp;<?= $value['price'] ?>€</li>
+                        <li class="list-group-item">Stock / <?= $value['quantity'] ?></li>
+                        <li class="list-group-item">
+                            <form method="post">
+                                <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit">
+                                    <i class="fa-solid fa-plus"></i> Panier
+                                </button>
+                            </form>
+                            <?php
+                            if (isset($_POST['addcart']) && empty($_SESSION)) {
+                                header("Location: ./connexion.php");
+                            }
+                            ?>
+                        </li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+    <?php
+    } ?>
+</div>
 
-
-                        </div>
-                    </a>
-                <?php
-                } ?>
-            </div>
 
         </div>
 
