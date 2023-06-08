@@ -59,7 +59,9 @@ $resultproduct = $product->fetchAll(PDO::FETCH_ASSOC);
                                     <?php
                                     foreach ($resultproduct as $res) { ?>
                                         <div class="carousel-item">
-                                            <img src="<?= $res['path'] ?>" class="d-block w-auto" alt="...">
+                                            <a href="details.php?id=<?= $res['product_id'] ?>">
+                                                <img src="<?= $res['path'] ?>" class="d-block w-auto" alt="...">
+                                            </a>
                                         </div>
                                     <?php
                                     } ?>
