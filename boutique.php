@@ -141,8 +141,6 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
                                     } ?>
                                 </li>
                             </ul>
-
-
                         </div>
                     </a>
                 <?php
