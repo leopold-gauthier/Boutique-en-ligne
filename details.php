@@ -87,7 +87,7 @@ if (isset($_POST['addcart'])) {
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-body">
-                                            <img src="<?= $imagePath ?>" class="modal-image" />
+                                            <img src="<?= $imagePath ?>" class="modal-image bigger-image" />
                                         </div>
                                     </div>
                                 </div>
