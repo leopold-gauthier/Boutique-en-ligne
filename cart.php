@@ -273,51 +273,40 @@ $orderpayed = false;
 
         for (let i = 0; i < rows.length; i++) {
             let name = rows[i].querySelector("td:nth-child(2)").innerHTML;
-            console.log(name);
             let marque = rows[i].querySelector("td:nth-of-type(3)").innerHTML;
-            // console.log(marque);
             let quantity = rows[i].querySelector("td:nth-of-type(4)").innerHTML;
-            // console.log(quantity);
+            let price = rows[i].querySelector("td:nth-of-type(5)").innerHTML.replace("€", "");
+            console.log(price);
 
             let element = {
                 name: name,
                 description: marque,
-                quantity: parseInt(quantity),
+                quantity: quantity,
                 unit_amount: {
-                    value: 1,
-                    currency_code: "$"
+                    value: parseFloat(price),
+                    currency_code: "USD"
                 }
             };
 
             elements.push(element);
 
+
         }
-        console.log(elements);
+        // console.log(json_object);
         paypal.Buttons({
 
             // Configurer la transaction
             createOrder: function(data, actions) {
+                let produits = elements;
 
-                // let produits = elements;
-                // console.log(produits);
-                // Les produits à payer avec leurs details
-                var produits = [{
-                    name: "Produit 1",
-                    description: "Description du produit 1",
-                    quantity: 1,
-                    unit_amount: {
-                        value: 1,
-                        currency_code: "USD"
-                    }
-                }];
-                console.log(produits);
-
-                // Le total des produits
                 var total_amount = produits.reduce(function(total, product) {
+                    console.log(product.unit_amount.value);
+                    console.log(product.quantity);
                     return total + product.unit_amount.value * product.quantity;
+                    console.log(total);
                 }, 0);
 
-                // La transaction
+
                 return actions.order.create({
                     purchase_units: [{
                         items: produits,
@@ -336,9 +325,7 @@ $orderpayed = false;
             },
             onApprove(data) {
                 console.log("payer");
-                <?php
-                $orderpayed = true;
-                ?>
+
             }
         }).render("#paypal-boutons");
     </script>
