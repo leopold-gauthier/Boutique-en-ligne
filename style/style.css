@@ -21,7 +21,10 @@ h6{
 
 /*//////////////////admin///////////////////*/
 
-
+#filter_admin{
+    float: right;
+    margin-bottom: 10px;
+}
 .btn{
     margin-top: 5px;
 }
@@ -94,11 +97,29 @@ a{
 
 /*//////////////////////boutique//////////////*/
 
-#boutique{
-width: 20% !important;
-
-
+.produit.d-inline-flex {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
 }
+
+.card{
+    width: 202px;
+    height: 550px;
+    margin: 10px 10px 10px 10px;
+}
+.produit {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.produit .card img {
+    width: 200px; /* Ajustez la largeur souhaitée */
+    height: 200px; /* Ajustez la hauteur souhaitée */
+    object-fit: cover; /* Permet de conserver les proportions de l'image */
+}
+
 #filter{
     float: right;
 }
@@ -150,6 +171,10 @@ h5{
 
 
 /*/////////////////// details////////////////////// */
+
+.bigger-image {
+    width: 80%; /* ou une valeur spécifique en pixels, pourcentage, etc. */
+}
 
 
 #details{

@@ -229,7 +229,10 @@ if (isset($_POST['deletecat'])) {
                     </div>
                     <div class="view">
                         <div class="v_product">
-                            <h5 id="delete_part">Supprimer un produit :</h5>
+                            <h5 id="delete_part">Supprimer/Modifier un produit :</h5>
+                            <button id="filter_admin" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <i class="fa-solid fa-filter"></i>Filtrer
+                            </button>
                             <table class="my-table">
                                 <thead>
                                     <tr>
@@ -242,6 +245,7 @@ if (isset($_POST['deletecat'])) {
                                         <th class="table-heading">Date</th>
                                         <th class="table-heading">Quantité</th>
                                         <th class="table-heading">Supprimer</th>
+                                        <th class="table-heading">Modifier</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -258,6 +262,9 @@ if (isset($_POST['deletecat'])) {
                                             <td><?= $value['quantity'] ?></td>
                                             <td>
                                                 <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" class="btn btn-secondary" value="<?= $value['id'] ?>"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                            <td>
+                                                <button data-bs-toggle="modal" data-bs-target="#modalsecurity<?= $value['id'] ?>" class="btn btn-secondary" value="<?= $value['id'] ?>"><i class="fa-solid fa-plus-minus" style="color: #ffffff;"></i></button>
                                             </td>
                                         </tr>
 

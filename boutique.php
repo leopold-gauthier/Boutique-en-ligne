@@ -96,58 +96,56 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
     </header>
     <main>
 
-        <div id="container">
-            <h3><?= $resultproduct[0]['name'] ?></h3>
-            <div id="man">
-                <div class="categorie">
-                    <a href="./boutique.php?type=<?= $_GET['type'] ?>">
-                        <div class="btn btn-secondary">
-                            Tous
-                        </div>
-                    </a>
-                    <?php foreach ($results as $result => $value) {
-                    ?>
-                        <a href="./boutique.php?type=<?= $_GET['type'] ?>&cat=<?= $value["id"]; ?>">
-                            <div class="btn btn-secondary"><?= $value["name"]; ?>
-                            </div>
-                        </a>
-                    <?php } ?>
-                    <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-filter"></i>Filtrer</button>
+    <div id="container">
+    <h3><?= $resultproduct[0]['name'] ?></h3>
+    <div id="man">
+        <div class="categorie">
+            <a href="./boutique.php?type=<?= $_GET['type'] ?>">
+                <div class="btn btn-secondary">
+                    Tous
                 </div>
-                <?php
-                include_once('./include/filter_modal-inc.php');
-                ?>
-            </div>
-            <div class="produit d-inline-flex">
-                <?php
-                foreach ($resultproduct as $result => $value) { ?>
-                    <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                        <div class="card">
-                            <img src="<?= $value['path'] ?>" alt="">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $value['product'] ?></h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Prix :&nbsp;
-                                    <?= $value['price'] ?>€</li>
-                                <li class="list-group-item">Stock /
-                                    <?= $value['quantity'] ?></li>
-                                <li class="list-group-item">
-                                    <form method="post">
-                                        <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                                    </form>
-                                    <?php if (isset($_POST['addcart']) && empty($_SESSION)) {
-                                        header("Location: ./connexion.php");
-                                    } ?>
-                                </li>
-                            </ul>
-                        </div>
-                    </a>
-                <?php
-                } ?>
-            </div>
-
+            </a>
+            <?php foreach ($results as $result => $value) { ?>
+                <a href="./boutique.php?type=<?= $_GET['type'] ?>&cat=<?= $value["id"]; ?>">
+                    <div class="btn btn-secondary"><?= $value["name"]; ?></div>
+                </a>
+            <?php } ?>
+            <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                <i class="fa-solid fa-filter"></i>Filtrer
+            </button>
         </div>
+        <?php include_once('./include/filter_modal-inc.php'); ?>
+    </div>
+    <div class="produit d-inline-flex">
+        <?php foreach ($resultproduct as $result => $value) { ?>
+            <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
+                <div class="card">
+                    <img src="<?= $value['path'] ?>" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $value['product'] ?></h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Prix :&nbsp;<?= $value['price'] ?>€</li>
+                        <li class="list-group-item">Stock /<?= $value['quantity'] ?></li>
+                        <li class="list-group-item">
+                            <form method="post">
+                                <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit">
+                                    <i class="fa-solid fa-plus"></i> Panier
+                                </button>
+                            </form>
+                            <?php
+                            if (isset($_POST['addcart']) && empty($_SESSION)) {
+                                header("Location: ./connexion.php");
+                            }
+                            ?>
+                        </li>
+                    </ul>
+                </div>
+            </a>
+        <?php } ?>
+    </div>
+</div>
+
 
         <?php
         if (!isset($_GET['type'])) {
