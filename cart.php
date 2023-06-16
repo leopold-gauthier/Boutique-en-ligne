@@ -324,7 +324,22 @@ $orderpayed = false;
                 })
             },
             onApprove(data) {
-                console.log("payer");
+                console.log(data);
+
+                fetch("traitement-order.php", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }).then(reponse => {
+                    return reponse.json()
+                }).then(data => {
+                    console.log(data);
+                    console.log("valider");
+                }).catch(error => {
+                    console.log(error);
+                })
 
             }
         }).render("#paypal-boutons");
