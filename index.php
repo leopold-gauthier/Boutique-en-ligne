@@ -1,7 +1,7 @@
 <?php
 ob_start();
 include("./class/User.php");
-$product = $bdd->prepare("SELECT product.id as product_id, product.*, category.*, subcategory.id, 
+$req = $bdd->prepare("SELECT product.id as product_id, product.*, category.*, subcategory.id, 
 product_image_path.path
 FROM product
 INNER JOIN subcategory ON product.id_subcategory = subcategory.id
@@ -11,11 +11,12 @@ INNER JOIN (
     FROM product_image_path
     GROUP BY id_product
 ) AS product_image_path ON product.id = product_image_path.id_product ORDER BY date_add DESC");
+$req->execute([]);
+$newproduct = $req->fetchAll(PDO::FETCH_ASSOC);
 
-$product->execute([]);
-$resultproduct = $product->fetchAll(PDO::FETCH_ASSOC);
-
-
+$req2 = $bdd->prepare("SELECT * , COUNT(orders_product.id_product) AS best_nb_product FROM `orders_product` INNER JOIN product_image_path ON orders_product.id_product = product_image_path.id_product GROUP BY orders_product.id_product ORDER BY best_nb_product DESC;");
+$req2->execute([]);
+$bestseller = $req2->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +42,16 @@ $resultproduct = $product->fetchAll(PDO::FETCH_ASSOC);
     <main>
         <div class="container>">
             <div id="index">
+                <h2 class="m-25">La Sappe 100% partenaire de la terre <i class="fa-solid fa-face-kiss-wink-heart"></i> !</h2>
                 <div id="firstpart">
                     <div id="best_sale">
+                        <div id="image">
+                            <a href="details.php?id=<?= $bestseller['id_product'] ?>">
+                                <img src="<?= $bestseller['path'] ?>" class="d-block w-auto" alt="...">
+                            </a>
+                        </div>
                         <div id="description">
                             <h5>Best Seller</h5>
-
                             <p>Profitez de cette opportunité unique pour adopter un style éthique sans compromettre votre sens du glamour. Les articles de notre collection Best-Seller sont non seulement conçus pour impressionner, mais aussi pour témoigner de votre engagement envers l'environnement. Chaque pièce a été soigneusement sélectionnée pour sa qualité, son design moderne et sa contribution à la réduction des déchets textiles.</p>
                         </div>
                     </div>
@@ -57,7 +63,7 @@ $resultproduct = $product->fetchAll(PDO::FETCH_ASSOC);
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner">
                                     <?php
-                                    foreach ($resultproduct as $res) { ?>
+                                    foreach ($newproduct as $res) { ?>
                                         <div class="carousel-item">
                                             <a href="details.php?id=<?= $res['product_id'] ?>">
                                                 <img src="<?= $res['path'] ?>" class="d-block w-auto" alt="...">
