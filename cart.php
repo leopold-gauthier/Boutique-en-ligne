@@ -283,7 +283,7 @@ $orderpayed = false;
                 description: marque,
                 quantity: quantity,
                 unit_amount: {
-                    value: parseFloat(price),
+                    value: parseInt(price),
                     currency_code: "USD"
                 }
             };
@@ -337,8 +337,10 @@ $orderpayed = false;
                 }).then(data => {
                     console.log(data);
                     console.log("valider");
+                    window.location.reload();
                 }).catch(error => {
                     console.log(error);
+                    window.location.reload();
                 })
 
             }

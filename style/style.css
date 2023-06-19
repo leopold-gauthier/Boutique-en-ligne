@@ -5,6 +5,7 @@ body{
 }
 
 
+
 /*////////////////footer///////////////////*/
 
 #footer{
@@ -172,6 +173,7 @@ h5{
 
 /*/////////////////// details////////////////////// */
 
+
 .bigger-image {
     width: 80%; /* ou une valeur spécifique en pixels, pourcentage, etc. */
 }
@@ -295,9 +297,19 @@ h5{
 }
 
 /* index */
+
+#index{
+    margin: 0%;
+    padding: 0%;
+}
+#index h2{
+    margin: 0% 0% 0% 10%;
+    text-decoration: underline;
+}
+
 #best_sale{
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
 }
 
 
@@ -323,11 +335,15 @@ h5{
 }
 
 #best_sale img{
+    border: #000000 1px solid;
+    border-radius: 20% 0%;
     height: 300px;
 
 }
 
 #new_product img{
+    border: #000000 1px solid;
+    border-radius: 0% 20%;
     height: 300px;
 }
 
@@ -337,6 +353,7 @@ h5{
     align-items: center;
     justify-content: center;
     width: 50%;
+    margin: 5%;
 }
 #best_sale #description{
     display: flex;
@@ -344,4 +361,6 @@ h5{
     align-items: center;
     justify-content: center;
     width: 50%;
+    margin: 5%;
+
 }
