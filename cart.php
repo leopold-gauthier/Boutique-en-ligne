@@ -300,10 +300,7 @@ $orderpayed = false;
                 let produits = elements;
 
                 var total_amount = produits.reduce(function(total, product) {
-                    console.log(product.unit_amount.value);
-                    console.log(product.quantity);
                     return total + product.unit_amount.value * product.quantity;
-                    console.log(total);
                 }, 0);
 
 

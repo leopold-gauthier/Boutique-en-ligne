@@ -52,15 +52,24 @@ if (isset($_POST['addcart']) && !empty($_SESSION)) {
 
     if ($recupUser->rowCount() > 0) {
         $cartItem = $recupUser->fetch();
-        $quantity = $cartItem['quantity'] + 1;
+        // Selectionne les produits pour comparée les quantité entre la table cart & la table product
+        $product = $bdd->prepare("SELECT * FROM product WHERE id = ?");
+        $product->execute([$produit]);
+        $rp = $product->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($cartItem['quantity'] >= $rp[0]['quantity']) {
+            $quantity = $cartItem['quantity'];
+        } else {
+            $quantity = $cartItem['quantity'] + 1;
+        }
 
         $addcart = $bdd->prepare("UPDATE cart SET quantity = ? WHERE id_user = ? AND id_product = ?");
         $addcart->execute([$quantity, $user, $produit]);
-        header("Location: ./boutique.php?type=$redirection");
+        // header("Location: ./boutique.php?type=$redirection");
     } else {
         $addcart = $bdd->prepare("INSERT INTO cart (id_user, id_product, quantity) VALUES (?, ?, ?)");
         $addcart->execute([$user, $produit, 1]);
-        header("Location: ./boutique.php?type=$redirection");
+        // header("Location: ./boutique.php?type=$redirection");
     }
 }
 
@@ -96,55 +105,64 @@ $results = $res->fetchAll(PDO::FETCH_ASSOC);
     </header>
     <main>
 
-    <div id="container">
-    <h3><?= $resultproduct[0]['name'] ?></h3>
-    <div id="man">
-        <div class="categorie">
-            <a href="./boutique.php?type=<?= $_GET['type'] ?>">
-                <div class="btn btn-secondary">
-                    Tous
+        <div id="container">
+            <h3><?= $resultproduct[0]['name'] ?></h3>
+            <div id="man">
+                <div class="categorie">
+                    <a href="./boutique.php?type=<?= $_GET['type'] ?>">
+                        <div class="btn btn-secondary">
+                            Tous
+                        </div>
+                    </a>
+                    <?php foreach ($results as $result => $value) { ?>
+                        <a href="./boutique.php?type=<?= $_GET['type'] ?>&cat=<?= $value["id"]; ?>">
+                            <div class="btn btn-secondary"><?= $value["name"]; ?></div>
+                        </a>
+                    <?php } ?>
+                    <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                        <i class="fa-solid fa-filter"></i>Filtrer
+                    </button>
                 </div>
-            </a>
-            <?php foreach ($results as $result => $value) { ?>
-                <a href="./boutique.php?type=<?= $_GET['type'] ?>&cat=<?= $value["id"]; ?>">
-                    <div class="btn btn-secondary"><?= $value["name"]; ?></div>
-                </a>
-            <?php } ?>
-            <button id="filter" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal">
-                <i class="fa-solid fa-filter"></i>Filtrer
-            </button>
+                <?php include_once('./include/filter_modal-inc.php'); ?>
+            </div>
+            <div class="produit d-inline-flex">
+                <?php foreach ($resultproduct as $result => $value) { ?>
+                    <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
+                        <div class="card">
+                            <img src="<?= $value['path'] ?>" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $value['product'] ?></h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Prix :&nbsp;<?= $value['price'] ?>€</li>
+                                <li class="list-group-item">Stock /<?= $value['quantity'] ?></li>
+                                <li class="list-group-item">
+                                    <?php if ($value['quantity'] <= 0) {
+                                    ?>
+                                        <button class="btn border" disabled> Indisponible</button>
+                                    <?php
+                                    } else { ?>
+                                        <form method="post">
+                                            <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit">
+                                                <i class="fa-solid fa-plus"></i> Panier
+                                            </button>
+                                        </form>
+                                    <?php
+                                    }
+                                    ?>
+
+                                    <?php
+                                    if (isset($_POST['addcart']) && empty($_SESSION)) {
+                                        header("Location: ./connexion.php");
+                                    }
+                                    ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </a>
+                <?php } ?>
+            </div>
         </div>
-        <?php include_once('./include/filter_modal-inc.php'); ?>
-    </div>
-    <div class="produit d-inline-flex">
-        <?php foreach ($resultproduct as $result => $value) { ?>
-            <a href="details.php?id=<?= $value['product_id'] ?>" class="card-link">
-                <div class="card">
-                    <img src="<?= $value['path'] ?>" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $value['product'] ?></h5>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Prix :&nbsp;<?= $value['price'] ?>€</li>
-                        <li class="list-group-item">Stock /<?= $value['quantity'] ?></li>
-                        <li class="list-group-item">
-                            <form method="post">
-                                <button value="<?= $value['product_id'] ?>" name="addcart" class="btn" type="submit">
-                                    <i class="fa-solid fa-plus"></i> Panier
-                                </button>
-                            </form>
-                            <?php
-                            if (isset($_POST['addcart']) && empty($_SESSION)) {
-                                header("Location: ./connexion.php");
-                            }
-                            ?>
-                        </li>
-                    </ul>
-                </div>
-            </a>
-        <?php } ?>
-    </div>
-</div>
 
 
         <?php

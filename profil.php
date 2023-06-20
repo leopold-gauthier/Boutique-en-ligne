@@ -5,6 +5,10 @@ include_once("./class/User.php");
 if (isset($_SESSION['user'])) {
     // Initialiser l'objet User avec les valeurs récupérées
     $user = new User($_SESSION['user']->id, $_SESSION['user']->login, "", $_SESSION['user']->email, $_SESSION['user']->firstname, $_SESSION['user']->lastname, $_SESSION['user']->tel);
+    // Requete pour récupérer les commande celon l'id user
+    $reqOrders = $bdd->prepare("SELECT * FROM orders INNER JOIN orders_product ON orders.id = orders_product.id_order WHERE id_user = ? GROUP BY orderID ORDER BY date desc");
+    $reqOrders->execute([$user->id]);
+    $OrdersUser = $reqOrders->fetchAll(PDO::FETCH_ASSOC);
 } else {
     // L'utilisateur n'est pas connecté ou ses informations ne sont pas disponibles
     // Gérer cette situation en conséquence (redirection, affichage d'un message d'erreur, etc.)
@@ -98,6 +102,30 @@ if (isset($_SESSION['user'])) {
                     </fieldset>
                     <a href="./edit.php"><button type="button" class="btn btn-primary"><i class="fa-solid fa-pen-to-square" style="color: #000000;"></i>Modifier votre profil</button></a>
                 </form>
+            </div>
+            <h3>Commandes</h3>
+            <div id="orders">
+                <table class="my-table">
+                    <thead>
+                        <tr>
+                            <th class="table-heading">OrderID</th>
+                            <th class="table-heading">Payée par</th>
+                            <th class="table-heading">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($OrdersUser as $result => $value) {
+                        ?>
+                            <tr>
+                                <td><?= $value['orderID'] ?></td>
+                                <td><?= $value['payementSource'] ?></td>
+                                <td><?= $value['date'] ?></td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
