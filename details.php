@@ -30,8 +30,11 @@ if (isset($_POST['addcart'])) {
 
     if ($recupUser->rowCount() > 0) {
         $cartItem = $recupUser->fetch();
-        $quantity = $cartItem['quantity'] + 1;
-
+        if ($cartItem['quantity'] >= $resultproduct['quantity']) {
+            $quantity = $cartItem['quantity'];
+        } else {
+            $quantity = $cartItem['quantity'] + 1;
+        }
         $addcart = $bdd->prepare("UPDATE cart SET quantity = ? WHERE id_user = ? AND id_product = ?");
         $addcart->execute([$quantity, $user, $produit]);
         header("Location: ./details.php?id=$redirection");
@@ -126,9 +129,18 @@ if (isset($_POST['addcart'])) {
                             </table>
                         </div>
                         <div id="panier">
-                            <form method="post">
-                                <button value="<?= $_GET['id'] ?>" name="addcart" class="btn border" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
-                            </form>
+                            <?php if ($resultproduct['quantity'] <= 0) {
+                            ?>
+                                <button value="<?= $_GET['id'] ?>" name="addcart" class="btn border" disabled> Indisponible</button>
+                            <?php
+                            } else { ?>
+                                <form method="post">
+                                    <button value="<?= $_GET['id'] ?>" name="addcart" class="btn border" type="submit"><i class="fa-solid fa-plus"></i> Panier</button>
+                                </form>
+                            <?php
+                            }
+                            ?>
+
                         </div>
                     </div>
                 </div>
