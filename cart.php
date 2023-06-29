@@ -242,7 +242,6 @@ $orderpayed = false;
                             $totalPanierAvecTva = $totalPanier + $tva;
                             ?>
                             (TVA 20%) : <?= number_format($tva, 2); ?> €<br>
-
                     </div>
                     <hr>
                     <div class="total">
@@ -267,7 +266,6 @@ $orderpayed = false;
     <script src="https://www.paypal.com/sdk/js?client-id=ATmGe5jbhPDfZtqeNcPZw_gcJU1YELNoRjhJFwkD_ixpd3yXgr-vYRmG6UrQFXonZ0BTvvcLdGd32Md_&currency=USD"></script>
     <script>
         let rows = document.querySelectorAll(".liste");
-        let totalprice = <?= $totalPanierAvecTva; ?>;
 
         let elements = []; // Déplacer la déclaration de la variable à l'extérieur de la boucle for
 
